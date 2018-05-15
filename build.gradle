@@ -24,7 +24,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes "Main-Class": "com.epam.organizer.Main"
+        attributes "Main-Class": "com.epam.organizer.MainPM"
     }
 
     from {
@@ -33,6 +33,9 @@ jar {
 }
 apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
+
+
+// to generate jar use this command  "gradle shadowJar"
 buildscript {
     repositories {
         jcenter()

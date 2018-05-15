@@ -17,11 +17,6 @@ public class MargeFunctionality {
     Sheet sheet = baseExcel.getSheet("CreatedSheet");
     private int BEGIN_ROW_CREATED_SHEET = 2;
 
-    public static void main(String[] args) {
-        REVENUE_PATH = OUTPUT_DIRECTORY + "\\" + getExcelPath();
-        new MargeFunctionality().mergeProjectsCells();
-    }
-
     public void mergeProjectsCells() {
         RevenueParser parser = new RevenueParser();
         List<Customers> customers = parser.getCustomerModel();
