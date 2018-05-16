@@ -18,19 +18,17 @@ import static com.epam.organizer.commons.CommonConst.*;
 import static com.epam.organizer.commons.LevelConst.*;
 
 public class RevenueSheetWriter {
-    private int LAST_EMP_ROW;
-
     StatusEmp statusEmp = new StatusEmp();
     String TITLE = "zero";
     String RATE = "zero";
     String RATE_ZERO = String.valueOf(0.0);
     HashMap<EmpTitle, String> benchList = new EmployeeBhv().getBenchList();
+    int rowCount;
+    private int LAST_EMP_ROW;
     private double TOTAL_REVENUE;
     private double TOTAL_EMP_COUNT;
     private double TOTAL_SENIORITY;
     private String RATE_MISMATCH = "";
-
-
     private BaseExcel baseExcel = new BaseExcel(REVENUE_PATH).openFile();
     private Sheet sheet = baseExcel.createSheet(MANAGERS_SHEET_NAME);
     private int BEGIN_ROW_CREATED_SHEET = 1;
@@ -101,7 +99,7 @@ public class RevenueSheetWriter {
         cell0.setCellStyle(getDollarForFormulaStyle());
 
 //        Revenue based on 152 h
-        Cell cell =row.createCell(6);
+        Cell cell = row.createCell(6);
         cell.setCellFormula("SUM(G2:G" + BEGIN_ROW_CREATED_SHEET + ")");
         cell.setCellStyle(getDollarForFormulaStyle());
 
@@ -111,7 +109,7 @@ public class RevenueSheetWriter {
         cell1.setCellStyle(getDollarForFormulaStyle());
 
 //        Final revenue
-        Cell cell2 =row.createCell(9);
+        Cell cell2 = row.createCell(9);
         cell2.setCellFormula("SUM(J2:J" + BEGIN_ROW_CREATED_SHEET + ")");
         cell2.setCellStyle(getDollarForFormulaStyle());
 
@@ -121,7 +119,7 @@ public class RevenueSheetWriter {
         cell3.setCellStyle(getDollarForFormulaStyle());
 
 //        Seniority per person
-        Cell cell4 =row.createCell(14);
+        Cell cell4 = row.createCell(14);
         cell4.setCellValue(new DecimalFormat("##.#").format(TOTAL_SENIORITY / TOTAL_EMP_COUNT));
 
 //        Employee count
@@ -136,15 +134,15 @@ public class RevenueSheetWriter {
     public void writeConclusionTotal() {
         BEGIN_ROW_CREATED_SHEET = BEGIN_ROW_CREATED_SHEET + 4;
 
-        sheet.setColumnWidth(4,7000);
+        sheet.setColumnWidth(4, 7000);
 
         //       revenue
         Row row = sheet.createRow(BEGIN_ROW_CREATED_SHEET);
-        Cell cell= row.createCell(4);
+        Cell cell = row.createCell(4);
         cell.setCellValue("Real Revenue as per report");
         cell.setCellStyle(getCellSTotalStyle());
 
-        Cell cellTotalRev =row.createCell(5);
+        Cell cellTotalRev = row.createCell(5);
         cellTotalRev.setCellValue(TOTAL_REVENUE);
         cellTotalRev.setCellStyle(getDollarForFormulaStyle());
         BEGIN_ROW_CREATED_SHEET++;
@@ -156,7 +154,7 @@ public class RevenueSheetWriter {
         cell1.setCellValue("Revenue based on 152 hours");
         cell1.setCellStyle(getCellSTotalStyle());
 
-        String TOTAL_REV_BASED_ON_152 ="SUM(G2:G" + LAST_EMP_ROW + ")";
+        String TOTAL_REV_BASED_ON_152 = "SUM(G2:G" + LAST_EMP_ROW + ")";
         Cell cellTotalRevBasedOn152 = row1.createCell(5);
         cellTotalRevBasedOn152.setCellFormula(TOTAL_REV_BASED_ON_152);
         cellTotalRevBasedOn152.setCellStyle(getDollarForFormulaStyle());
@@ -168,7 +166,7 @@ public class RevenueSheetWriter {
         cell2.setCellValue("Lost revenue (0 rate)");
         cell2.setCellStyle(getCellSTotalStyle());
 
-        String TOTAL_LOST_REV_ZERO_RATE ="SUM(H2:H" + LAST_EMP_ROW + ")";
+        String TOTAL_LOST_REV_ZERO_RATE = "SUM(H2:H" + LAST_EMP_ROW + ")";
         Cell cellTotalLost = row2.createCell(5);
         cellTotalLost.setCellFormula(TOTAL_LOST_REV_ZERO_RATE);
         cellTotalLost.setCellStyle(getDollarForFormulaStyle());
@@ -180,31 +178,31 @@ public class RevenueSheetWriter {
         cell3.setCellValue("Ideal Revenue, based on 152 hours and no 0 rates");
         cell3.setCellStyle(getCellSTotalStyle());
 
-        String TOTAL_IDEAL_REVENUE ="SUM(J2:J" + LAST_EMP_ROW + ")";
-        Cell cellTotalIdealRev =row3.createCell(5);
+        String TOTAL_IDEAL_REVENUE = "SUM(J2:J" + LAST_EMP_ROW + ")";
+        Cell cellTotalIdealRev = row3.createCell(5);
         cellTotalIdealRev.setCellFormula(TOTAL_IDEAL_REVENUE);
         cellTotalIdealRev.setCellStyle(getDollarForFormulaStyle());
         BEGIN_ROW_CREATED_SHEET++;
 
 //       Total cost
         Row row4 = sheet.createRow(BEGIN_ROW_CREATED_SHEET);
-        Cell cell4= row4.createCell(4);
+        Cell cell4 = row4.createCell(4);
         cell4.setCellValue("Total cost");
         cell4.setCellStyle(getCellSTotalStyle());
 
         String TOTAL_COST = "SUM(L2:L" + LAST_EMP_ROW + ")";
-        Cell cellTotalCost =row4.createCell(5);
+        Cell cellTotalCost = row4.createCell(5);
         cellTotalCost.setCellFormula(TOTAL_COST);
         cellTotalCost.setCellStyle(getDollarForFormulaStyle());
         BEGIN_ROW_CREATED_SHEET++;
 
 //       PM Real
         Row row5 = sheet.createRow(BEGIN_ROW_CREATED_SHEET);
-        Cell cell5 =row5.createCell(4);
+        Cell cell5 = row5.createCell(4);
         cell5.setCellValue("PM Real");
         cell5.setCellStyle(getCellSTotalStyle());
 
-        String TOTAL_PM_REAL = "("+TOTAL_REVENUE+"-"+TOTAL_COST+")"+"/("+TOTAL_REVENUE+")"+"*"+100;
+        String TOTAL_PM_REAL = "(" + TOTAL_REVENUE + "-" + TOTAL_COST + ")" + "/(" + TOTAL_REVENUE + ")" + "*" + 100;
         Cell cellPMreal = row5.createCell(5);
         cellPMreal.setCellFormula(TOTAL_PM_REAL);
         cellPMreal.setCellStyle(getDollarForFormulaStyle());
@@ -217,7 +215,7 @@ public class RevenueSheetWriter {
         cell6.setCellValue("PM Ideal");
         cell6.setCellStyle(getCellSTotalStyle());
 
-        String TOTAL_PM_IDEAL = "("+TOTAL_REV_BASED_ON_152+"-"+TOTAL_COST+")"+"/("+TOTAL_REV_BASED_ON_152+")"+"*"+100;
+        String TOTAL_PM_IDEAL = "(" + TOTAL_REV_BASED_ON_152 + "-" + TOTAL_COST + ")" + "/(" + TOTAL_REV_BASED_ON_152 + ")" + "*" + 100;
 
         Cell cellPMIdeal = row6.createCell(5);
         cellPMIdeal.setCellFormula(TOTAL_PM_IDEAL);
@@ -225,7 +223,7 @@ public class RevenueSheetWriter {
 
         BEGIN_ROW_CREATED_SHEET++;
 
-        String COMPLEX_FORMULA = "("+TOTAL_REVENUE+"+"+TOTAL_LOST_REV_ZERO_RATE+"-"+TOTAL_COST+")"+"/"+"("+TOTAL_REVENUE+"+"+TOTAL_LOST_REV_ZERO_RATE+")"+"*"+"100";
+        String COMPLEX_FORMULA = "(" + TOTAL_REVENUE + "+" + TOTAL_LOST_REV_ZERO_RATE + "-" + TOTAL_COST + ")" + "/" + "(" + TOTAL_REVENUE + "+" + TOTAL_LOST_REV_ZERO_RATE + ")" + "*" + "100";
 
         //       PM Real +lost
         Row row7 = sheet.createRow(BEGIN_ROW_CREATED_SHEET);
@@ -279,18 +277,19 @@ public class RevenueSheetWriter {
             cell.setCellStyle(getCellSHeaderStyle());
 
 //            Project
-            sheet.setColumnWidth(0,3300);
+            sheet.setColumnWidth(0, 3300);
 //            TA Name
-            sheet.setColumnWidth(1,5000);
+            sheet.setColumnWidth(1, 5000);
 //           Lost Revenue
-            sheet.setColumnWidth(7,5000);
+            sheet.setColumnWidth(7, 5000);
 //           Seniority Level
-            sheet.setColumnWidth(10,6000);
+            sheet.setColumnWidth(10, 6000);
         }
 
 
         for (int i = 0; i < customers.size(); i++) {
             Customers customer = customers.get(i);
+            rowCount = BEGIN_ROW_CREATED_SHEET;
             for (int j = 0; j < customer.getStreamsList().size(); j++) {
                 int empCountPerCustomer = 0;
                 Cell cell15 = null;
@@ -317,8 +316,8 @@ public class RevenueSheetWriter {
                     } catch (IndexOutOfBoundsException exc) {
                         exc.getStackTrace();
                     }
-                        Cell cell7 = row1.createCell(7);
-                        cell7.setCellStyle(getStandardCellStyle());
+                    Cell cell7 = row1.createCell(7);
+                    cell7.setCellStyle(getStandardCellStyle());
                     if (RATE_MISMATCH.equals("rate mismatch")) {
                         cell7.setCellValue("rate mismatch");
                         RATE_MISMATCH = "";
@@ -427,30 +426,36 @@ public class RevenueSheetWriter {
                     cell14.setCellValue(empCount);
                     cell14.setCellStyle(getStandardCellStyle());
 
-//                  Employee count
-                    cell15 = row1.createCell(15);
-                    cell15.setCellStyle(getStandardCellStyle());
 
-//                   Seniority per project
-                    cell16 = row1.createCell(16);
-                    empCountSum = empCountSum + customer.getStreamsList().get(j).getEmployeesList().get(k).getEmployeeCount();
-                    cell16.setCellStyle(getStandardCellStyle());
-
+                empCountSum = empCountSum + customer.getStreamsList().get(j).getEmployeesList().get(k).getEmployeeCount();
 
                 }
 //                Employee count
                 Integer EMP_COUNT = customer.getStreamsList().get(j).getEmployeesList().size();
                 TOTAL_EMP_COUNT = TOTAL_EMP_COUNT + EMP_COUNT;
-                cell15.setCellValue(EMP_COUNT);
 
+//                Seniority per project
                 empCountPerCustomer = empCountPerCustomer + customer.getStreamsList().get(j).getEmployeesList().size();
                 double average = (double) empCountSum / empCountPerCustomer;
 
+//                Second loop for setting total Emp count and Sen per project for merging cells
+                for (int k = 0; k < customer.getStreamsList().get(j).getEmployeesList().size(); k++) {
+                    Row row1 = getRow();
+
+//                  Employee count
+                    cell15 = row1.createCell(15);
+                    cell15.setCellStyle(getCountCellStyle());
+                    cell15.setCellValue(EMP_COUNT);
+
+//                   Seniority per project
+                    cell16 = row1.createCell(16);
+                    cell16.setCellStyle(getCountCellStyle());
+
+
 //              Seniority per project
-                cell16.setCellValue(new DecimalFormat("##.##").format(average));
+                    cell16.setCellValue(new DecimalFormat("##.##").format(average));
 
-
-
+                }
 //                int empSize =(customer.getStreamsList().get(j).getEmployeesList().size()-1);
 //                if(empSize>1){
 //                sheet.addMergedRegion(new CellRangeAddress(lastRow,(lastRow+empSize),0,0));
@@ -468,11 +473,14 @@ public class RevenueSheetWriter {
     }
 
 
-
 //    Utils
 
     public Row createCustomRow() {
         return sheet.createRow(BEGIN_ROW_CREATED_SHEET++);
+    }
+
+    public Row getRow() {
+        return sheet.getRow(rowCount++);
     }
 
 //    Styles
@@ -491,6 +499,7 @@ public class RevenueSheetWriter {
         style.setBorderTop(BorderStyle.MEDIUM);
         return style;
     }
+
     private CellStyle getCellSTotalStyle() {
         CellStyle style = baseExcel.createCellStyle();
         style.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -505,6 +514,7 @@ public class RevenueSheetWriter {
         style.setBorderTop(BorderStyle.MEDIUM);
         return style;
     }
+
     public CellStyle getStandardCellStyle() {
         if (TITLE.equals(DOESN_T_FOUND_EMPLOYEE)) {
             return getRedCellStyle();
@@ -521,6 +531,7 @@ public class RevenueSheetWriter {
         style.setAlignment(HorizontalAlignment.LEFT);
         return style;
     }
+
     public CellStyle getRedCellStyle() {
         CellStyle style = baseExcel.createCellStyle();
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -533,6 +544,7 @@ public class RevenueSheetWriter {
         style.setBorderTop(BorderStyle.MEDIUM);
         return style;
     }
+
     public CellStyle getYellowCellStyle() {
         CellStyle style = baseExcel.createCellStyle();
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -547,11 +559,24 @@ public class RevenueSheetWriter {
     }
 
 
-    public CellStyle getDollarForFormulaStyle(){
+    public CellStyle getDollarForFormulaStyle() {
         CellStyle style = baseExcel.createCellStyle();
         DataFormat format = baseExcel.getWorkbook().createDataFormat();
 
         style.setDataFormat(format.getFormat("#"));
+        return style;
+    }
+
+    public CellStyle getCountCellStyle() {
+        CellStyle style = baseExcel.createCellStyle();
+
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
+
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
         return style;
     }
 }

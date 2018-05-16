@@ -25,20 +25,30 @@ public class MargeFunctionality {
                 int rowCount = BEGIN_ROW_CREATED_SHEET;
                 for (int k = 0; k < customer.getStreamsList().get(j).getEmployeesList().size(); k++) {
                     sheet.getRow(1).getCell(0).setCellStyle(getProjectCellStyle());
+//                    sheet.getRow(1).getCell(15).setCellStyle(getCountCellStyle());
+//                    sheet.getRow(1).getCell(16).setCellStyle(getCountCellStyle());
 
                     Row row = getRow();
                     String string = row.getCell(0).getStringCellValue();
                     if (!string.equals("Bench")) {
                         row.getCell(0).setCellStyle(getProjectCellStyle());
                     }
+//                    sheet.getRow(1).getCell(15).setCellStyle(getProjectCellStyle());
+//                    sheet.getRow(1).getCell(16).setCellStyle(getProjectCellStyle());
+
                     BEGIN_ROW_CREATED_SHEET++;
                 }
                 int size = rowCount + (customer.getStreamsList().get(j).getEmployeesList().size() - 1);
                 if (rowCount != size) {
                     sheet.addMergedRegion(CellRangeAddress.valueOf("A" + rowCount + ":A" + size));
+                    sheet.addMergedRegion(CellRangeAddress.valueOf("P" + rowCount + ":P" + size));
+                    sheet.addMergedRegion(CellRangeAddress.valueOf("Q" + rowCount + ":Q" + size));
                 }
+
             }
         }
+//        sheet.addMergedRegion(CellRangeAddress.valueOf("Q" + 7 + ":Q" + 19));
+
         baseExcel.saveChangesToFile();
     }
 
@@ -54,6 +64,22 @@ public class MargeFunctionality {
 
         Font font = baseExcel.getWorkbook().createFont();
         font.setBold(true);
+
+        style.setFont(font);
+        style.setBorderBottom(BorderStyle.THICK);
+        style.setBorderLeft(BorderStyle.THICK);
+        style.setBorderRight(BorderStyle.THICK);
+        style.setBorderTop(BorderStyle.THICK);
+        return style;
+    }
+
+    public CellStyle getCountCellStyle() {
+        CellStyle style = baseExcel.createCellStyle();
+
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
+
+        Font font = baseExcel.getWorkbook().createFont();
 
         style.setFont(font);
         style.setBorderBottom(BorderStyle.THICK);
