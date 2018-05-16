@@ -12,7 +12,7 @@ import static com.epam.organizer.commons.CommonConst.REVENUE_PATH;
 public class ProjectPMFunctionality {
     private BaseExcel baseExcel = new BaseExcel(REVENUE_PATH).openFile();
     private Sheet sheetGet = baseExcel.getSheet(MANAGERS_SHEET_NAME);
-    private int BEGIN_ROW_CREATED_SHEET = 1;
+    private int BEGIN_ROW_CREATED_SHEET = 0;
 
     public void setPM(List<Customers> customers) {
 
@@ -20,15 +20,17 @@ public class ProjectPMFunctionality {
             Customers customer = customers.get(i);
 
             for (int j = 0; j < customer.getStreamsList().size(); j++) {
+                Cell cell17 = null;
+                Cell cell18 = null;
                 double sumRevenuePerStream = 0;
                 double sumCostPerStream = 0;
                 double sumRevenue152perStream = 0;
                 double sumLostRevenue = 0;
 
                 int empSize = customer.getStreamsList().get(j).getEmployeesList().size();
+                String string = null;
                 for (int k = 0; k < empSize; k++) {
-
-                    Row row1 = getRow();
+                   getRow();
 //                    Revenue
                     double revenue = Double.parseDouble(customer.getStreamsList().get(j).getEmployeesList().get(k).getRevenue());
                     sumRevenuePerStream = sumRevenuePerStream + revenue;
@@ -51,22 +53,30 @@ public class ProjectPMFunctionality {
                     double cost = Double.parseDouble(cell1);
                     sumCostPerStream = sumCostPerStream + cost;
 
+                    string = getField(BEGIN_ROW_CREATED_SHEET, 1);
 
-//                    Customer PM
-                        Cell cell17 = row1.createCell(17);
-                        cell17.setCellStyle(getStandardCellStyle());
-//                    Customer PM 152
-                        Cell cell18 = row1.createCell(18);
-                        cell18.setCellStyle(getStandardCellStyle());
-                    if ((k+1) == (customer.getStreamsList().get(j).getEmployeesList().size())) {
-
-                        double result = ((sumRevenuePerStream - sumCostPerStream) / sumRevenuePerStream) * 100;
-                        cell17.setCellValue(result);
-
-                        double result152 = ((sumRevenue152perStream - sumCostPerStream) / sumRevenue152perStream) * 100;
-                        cell18.setCellValue(result152);
-                    }
+//                    if ((k+1) == (customer.getStreamsList().get(j).getEmployeesList().size())) {
+//
+//                    }
                 }
+//                    Customer PM
+                Row row1 = sheetGet.getRow(BEGIN_ROW_CREATED_SHEET);
+
+                cell17 = row1.createCell(17);
+                cell17.setCellStyle(getStandardCellStyle());
+//                    Customer PM 152
+                cell18 = row1.createCell(18);
+                cell18.setCellStyle(getStandardCellStyle());
+
+                double result = ((sumRevenuePerStream - sumCostPerStream) / sumRevenuePerStream) * 100;
+                cell17.setCellValue(result);
+
+                double result152 = ((sumRevenue152perStream - sumCostPerStream) / sumRevenue152perStream) * 100;
+                cell18.setCellValue(result152);
+
+                String s = customer.getStreamsList().get(j).getRowLabels();
+                System.out.println(s);
+                System.out.println(string);
             }
         }
 
@@ -112,9 +122,7 @@ public class ProjectPMFunctionality {
 
 
     public Row getRow() {
-        Row tempRow;
-        tempRow = sheetGet.getRow(BEGIN_ROW_CREATED_SHEET++);
-        return tempRow;
+        return sheetGet.getRow(BEGIN_ROW_CREATED_SHEET++);
     }
 
     //    Styles
