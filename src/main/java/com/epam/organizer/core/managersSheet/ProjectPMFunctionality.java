@@ -75,8 +75,8 @@ public class ProjectPMFunctionality {
                 cell18.setCellValue(result152);
 
                 String s = customer.getStreamsList().get(j).getRowLabels();
-                System.out.println(s);
-                System.out.println(string);
+//                System.out.println(s);
+//                System.out.println(string);
             }
         }
 
