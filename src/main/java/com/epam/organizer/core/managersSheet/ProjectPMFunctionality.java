@@ -20,17 +20,16 @@ public class ProjectPMFunctionality {
             Customers customer = customers.get(i);
 
             for (int j = 0; j < customer.getStreamsList().size(); j++) {
-                Cell cell17 = null;
-                Cell cell18 = null;
+                int rowSize = BEGIN_ROW_CREATED_SHEET;
                 double sumRevenuePerStream = 0;
                 double sumCostPerStream = 0;
                 double sumRevenue152perStream = 0;
                 double sumLostRevenue = 0;
 
                 int empSize = customer.getStreamsList().get(j).getEmployeesList().size();
-                String string = null;
+
                 for (int k = 0; k < empSize; k++) {
-                   getRow();
+                    BEGIN_ROW_CREATED_SHEET++;
 //                    Revenue
                     double revenue = Double.parseDouble(customer.getStreamsList().get(j).getEmployeesList().get(k).getRevenue());
                     sumRevenuePerStream = sumRevenuePerStream + revenue;
@@ -47,36 +46,30 @@ public class ProjectPMFunctionality {
                         sumLostRevenue = sumLostRevenue + lost;
                     }
 
-
 //                    cost
                     String cell1 = getField(BEGIN_ROW_CREATED_SHEET, 11);
                     double cost = Double.parseDouble(cell1);
                     sumCostPerStream = sumCostPerStream + cost;
 
-                    string = getField(BEGIN_ROW_CREATED_SHEET, 1);
-
-//                    if ((k+1) == (customer.getStreamsList().get(j).getEmployeesList().size())) {
-//
-//                    }
                 }
-//                    Customer PM
-                Row row1 = sheetGet.getRow(BEGIN_ROW_CREATED_SHEET);
-
-                cell17 = row1.createCell(17);
-                cell17.setCellStyle(getStandardCellStyle());
-//                    Customer PM 152
-                cell18 = row1.createCell(18);
-                cell18.setCellStyle(getStandardCellStyle());
-
+//                    Project PM
                 double result = ((sumRevenuePerStream - sumCostPerStream) / sumRevenuePerStream) * 100;
-                cell17.setCellValue(result);
-
                 double result152 = ((sumRevenue152perStream - sumCostPerStream) / sumRevenue152perStream) * 100;
-                cell18.setCellValue(result152);
 
-                String s = customer.getStreamsList().get(j).getRowLabels();
-//                System.out.println(s);
-//                System.out.println(string);
+                int empSize1 = customer.getStreamsList().get(j).getEmployeesList().size();
+                for (int k = 0; k < empSize1; k++) {
+                    rowSize++;
+                    Row rowPM = getRow(rowSize);
+
+                    Cell cell17 = rowPM.createCell(17);
+                    cell17.setCellStyle(getCountCellStyle());
+                    cell17.setCellValue(result);
+
+//                    Customer PM 152
+                    Cell cell18 = rowPM.createCell(18);
+                    cell18.setCellStyle(getCountCellStyle());
+                    cell18.setCellValue(result152);
+                }
             }
         }
 
@@ -121,8 +114,8 @@ public class ProjectPMFunctionality {
     }
 
 
-    public Row getRow() {
-        return sheetGet.getRow(BEGIN_ROW_CREATED_SHEET++);
+    public Row getRow(int rowNumb) {
+        return sheetGet.getRow(rowNumb);
     }
 
     //    Styles
@@ -157,12 +150,6 @@ public class ProjectPMFunctionality {
     }
 
     public CellStyle getStandardCellStyle() {
-//        if (TITLE.equals(DOESN_T_FOUND_EMPLOYEE)) {
-//            return getRedCellStyle();
-//        } else if (RATE.equals(RATE_ZERO)) {
-//            return getYellowCellStyle();
-//        }
-
         CellStyle style = baseExcel.createCellStyle();
 
         style.setBorderBottom(BorderStyle.THIN);
@@ -196,5 +183,20 @@ public class ProjectPMFunctionality {
         style.setBorderTop(BorderStyle.MEDIUM);
         return style;
     }
+    public CellStyle getCountCellStyle() {
+        CellStyle style = baseExcel.createCellStyle();
+
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
+        DataFormat format = baseExcel.getWorkbook().createDataFormat();
+
+        style.setDataFormat(format.getFormat("#.##"));
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+        return style;
+    }
+
 }
 

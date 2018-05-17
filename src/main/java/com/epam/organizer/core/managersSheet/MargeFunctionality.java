@@ -25,17 +25,12 @@ public class MargeFunctionality {
                 int rowCount = BEGIN_ROW_CREATED_SHEET;
                 for (int k = 0; k < customer.getStreamsList().get(j).getEmployeesList().size(); k++) {
                     sheet.getRow(1).getCell(0).setCellStyle(getProjectCellStyle());
-//                    sheet.getRow(1).getCell(15).setCellStyle(getCountCellStyle());
-//                    sheet.getRow(1).getCell(16).setCellStyle(getCountCellStyle());
 
                     Row row = getRow();
                     String string = row.getCell(0).getStringCellValue();
                     if (!string.equals("Bench")) {
                         row.getCell(0).setCellStyle(getProjectCellStyle());
                     }
-//                    sheet.getRow(1).getCell(15).setCellStyle(getProjectCellStyle());
-//                    sheet.getRow(1).getCell(16).setCellStyle(getProjectCellStyle());
-
                     BEGIN_ROW_CREATED_SHEET++;
                 }
                 int size = rowCount + (customer.getStreamsList().get(j).getEmployeesList().size() - 1);
@@ -43,11 +38,12 @@ public class MargeFunctionality {
                     sheet.addMergedRegion(CellRangeAddress.valueOf("A" + rowCount + ":A" + size));
                     sheet.addMergedRegion(CellRangeAddress.valueOf("P" + rowCount + ":P" + size));
                     sheet.addMergedRegion(CellRangeAddress.valueOf("Q" + rowCount + ":Q" + size));
+                    sheet.addMergedRegion(CellRangeAddress.valueOf("R" + rowCount + ":R" + size));
+                    sheet.addMergedRegion(CellRangeAddress.valueOf("S" + rowCount + ":S" + size));
                 }
 
             }
         }
-//        sheet.addMergedRegion(CellRangeAddress.valueOf("Q" + 7 + ":Q" + 19));
 
         baseExcel.saveChangesToFile();
     }
