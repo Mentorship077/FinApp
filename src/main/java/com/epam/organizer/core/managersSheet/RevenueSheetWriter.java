@@ -1,17 +1,14 @@
 package com.epam.organizer.core.managersSheet;
 
 import com.epam.organizer.core.base.BaseExcel;
-import com.epam.organizer.core.emp.EmployeeBhv;
 import com.epam.organizer.core.emp.StatusEmp;
 import com.epam.organizer.models.Customers;
-import com.epam.organizer.models.FullEmployee;
-import com.epam.organizer.models.salaryTable.EmpTitle;
+import com.epam.organizer.models.rm.FullEmployee;
 import com.epam.organizer.models.salaryTable.Position;
 import org.apache.poi.ss.usermodel.*;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.epam.organizer.commons.CommonConst.*;
@@ -22,7 +19,6 @@ public class RevenueSheetWriter {
     String TITLE = "zero";
     String RATE = "zero";
     String RATE_ZERO = String.valueOf(0.0);
-    HashMap<EmpTitle, String> benchList = new EmployeeBhv().getBenchList();
     int rowCount;
     private int LAST_EMP_ROW;
     private double TOTAL_REVENUE;
@@ -240,10 +236,9 @@ public class RevenueSheetWriter {
     }
 
     public void writeBenchList(int rowNumb) {
-//        List<FullEmployee> list = statusEmp.g();
-        List<FullEmployee> list = null;
+        List<FullEmployee> list = statusEmp.getBenchList();
 
-        for(FullEmployee fullEmployee : list){
+        for (FullEmployee fullEmployee : list) {
             BEGIN_ROW_CREATED_SHEET++;
             Row row = sheet.createRow(rowNumb);
 
@@ -255,7 +250,7 @@ public class RevenueSheetWriter {
 
 //            Seniority Level
             Cell cell12 = row.createCell(10);
-            String filter = statusEmp.findPersonTitle(fullEmployee.getTitle());
+            String filter = statusEmp.findPersonTitle(fullEmployee.getTitle(), fullEmployee);
             cell12.setCellValue(filter);
             cell12.setCellStyle(getStandardCellStyle());
 
@@ -452,7 +447,7 @@ public class RevenueSheetWriter {
                     cell14.setCellStyle(getStandardCellStyle());
 
 
-                empCountSum = empCountSum + customer.getStreamsList().get(j).getEmployeesList().get(k).getEmployeeCount();
+                    empCountSum = empCountSum + customer.getStreamsList().get(j).getEmployeesList().get(k).getEmployeeCount();
 
                 }
 //                Employee count
@@ -487,7 +482,7 @@ public class RevenueSheetWriter {
 //                }
             }
         }
-//        writeBenchList(BEGIN_ROW_CREATED_SHEET);
+        writeBenchList(BEGIN_ROW_CREATED_SHEET);
         writeTotal();
 
 //        CellRangeAddress cellMerge = new CellRangeAddress(1,4,1,1);

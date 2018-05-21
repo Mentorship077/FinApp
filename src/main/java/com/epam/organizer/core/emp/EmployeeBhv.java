@@ -2,7 +2,7 @@ package com.epam.organizer.core.emp;
 
 import com.epam.organizer.core.base.BaseExcel;
 import com.epam.organizer.core.utils.ExcelFileUtils;
-import com.epam.organizer.models.FullEmployee;
+import com.epam.organizer.models.rm.FullEmployee;
 import com.epam.organizer.models.salaryTable.EmpTitle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;

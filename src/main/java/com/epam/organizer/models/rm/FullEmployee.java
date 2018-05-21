@@ -1,4 +1,4 @@
-package com.epam.organizer.models;
+package com.epam.organizer.models.rm;
 
 public class FullEmployee {
 

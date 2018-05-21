@@ -2,8 +2,9 @@ package com.epam.organizer.core.emp;
 
 import com.epam.organizer.models.Customers;
 import com.epam.organizer.models.Employee;
-import com.epam.organizer.models.FullEmployee;
+import com.epam.organizer.models.rm.FullEmployee;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.epam.organizer.commons.CommonConst.*;
@@ -11,7 +12,7 @@ import static com.epam.organizer.commons.CommonConst.*;
 public class StatusEmp {
     private int number;
     private List<FullEmployee> empList = new EmployeeBhv().getEmployeeList();
-    private List<FullEmployee> benchList = new EmployeeBhv().getEmployeeList();
+    private List<FullEmployee> benchList = new ArrayList<>();
 
     public String getSeniority(String value) {
         String normValue;
@@ -38,13 +39,38 @@ public class StatusEmp {
     }
 
 
-    public String findPersonTitle(String title) {
+    public String findPersonTitle(String name, FullEmployee emp) {
         for (FullEmployee employee : empList) {
-            if (title.equals(employee.getName())) {
+            if (name.equals(employee.getName())) {
+                return getSeniority(employee.getTitle());
+            }
+        }
+        if (name.equals(DOESN_T_FOUND_EMPLOYEE)) {
+            benchList.add(emp);
+        }
+        return DOESN_T_FOUND_EMPLOYEE;
+    }
+
+    public String findPersonTitle(String name) {
+        for (FullEmployee employee : empList) {
+            if (name.equals(employee.getName())) {
                 return getSeniority(employee.getTitle());
             }
         }
         return DOESN_T_FOUND_EMPLOYEE;
+    }
+
+    public List<FullEmployee> getBenchList() {
+        return benchList;
+    }
+
+    public String findPersonRM(String name) {
+        for (FullEmployee employee : empList) {
+            if (name.equals(employee.getName())) {
+                return employee.getRm();
+            }
+        }
+        return DOESN_T_FOUND_RM;
     }
 
 
@@ -52,10 +78,13 @@ public class StatusEmp {
         for (Customers customer : customers) {
             for (int j = 0; j < customer.getStreamsList().size(); j++) {
                 for (int k = 0; k < customer.getStreamsList().get(j).getEmployeesList().size(); k++) {
-                    String title = customer.getStreamsList().get(j).getEmployeesList().get(k).getRowLabels();
-                    if (!findPersonTitle(title).isEmpty()) {
-                        String titleResult = findPersonTitle(title);
+                    String person = customer.getStreamsList().get(j).getEmployeesList().get(k).getRowLabels();
+                    if (!findPersonTitle(person).isEmpty()) {
+                        String titleResult = findPersonTitle(person);
+                        String RM = findPersonRM(person);
+                        customer.getStreamsList().get(j).getEmployeesList().get(k).setName(person);
                         customer.getStreamsList().get(j).getEmployeesList().get(k).setTitle(titleResult);
+                        customer.getStreamsList().get(j).getEmployeesList().get(k).setRm(RM);
                         customer.getStreamsList().get(j).getEmployeesList().get(k).setEmployeeCount(number);
                     }
                 }

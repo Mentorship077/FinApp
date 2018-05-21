@@ -1,9 +1,28 @@
 package com.epam.organizer.models;
 
 public class Employee extends DescriptionModel{
+
+    private String name;
     private String title;
     private Integer employeeCount;
     private boolean finalRevenue;
+    private String rm;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRm() {
+        return rm;
+    }
+
+    public void setRm(String rm) {
+        this.rm = rm;
+    }
 
     public boolean isFinalRevenue() {
         return finalRevenue;
@@ -29,16 +48,5 @@ public class Employee extends DescriptionModel{
         this.title = title;
     }
 
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "title='" + title + '\'' +
-                ", employeeCount=" + employeeCount +
-                ", rowLabels='" + rowLabels + '\'' +
-                ", reportedHours='" + reportedHours + '\'' +
-                ", revenue='" + revenue + '\'' +
-                ", effectiveRate='" + effectiveRate + '\'' +
-                '}';
-    }
 }
 
