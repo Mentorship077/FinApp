@@ -1,41 +1,48 @@
 package com.epam.organizer.core.emp;
 
+import com.epam.organizer.core.base.BaseExcel;
+import com.epam.organizer.core.utils.ExcelFileUtils;
+import com.epam.organizer.models.FullEmployee;
+import com.epam.organizer.models.salaryTable.EmpTitle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import com.epam.organizer.core.base.BaseExcel;
-import com.epam.organizer.core.utils.ExcelFileUtils;
-import com.epam.organizer.models.salaryTable.EmpTitle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.epam.organizer.commons.CommonConst.EMPLOYEE_PATH;
 import static com.epam.organizer.commons.CommonConst.EMPLOYEE_SHEET;
-import static com.epam.organizer.commons.NumberConstant.TWO;
-import static com.epam.organizer.commons.NumberConstant.ZERO;
+import static com.epam.organizer.commons.NumberConstant.*;
 
 
 public class EmployeeBhv {
 
     private BaseExcel baseExcel = new BaseExcel(EMPLOYEE_PATH).openFile();
     private Sheet sheet = baseExcel.getSheet(EMPLOYEE_SHEET);
-    private HashMap<String, String> employee = new HashMap<>();
+    private List<FullEmployee> employeeList = new ArrayList<>();
     private HashMap<EmpTitle, String> npList = new HashMap<EmpTitle, String>();
 
 
-    public HashMap<String, String> getEmployeeTitle() {
+    public List<FullEmployee> getEmployeeList() {
         int excelRow = 1;
         do {
             if (isLastEmpRow(excelRow)) {
                 break;
             }
             String name = getField(excelRow, ZERO.getNumber());
-            String status = getField(excelRow, TWO.getNumber());
-            employee.put(name, status);
+            String rm = getField(excelRow, ONE.getNumber());
+            String title = getField(excelRow, TWO.getNumber());
+            String primarySkill = getField(excelRow, THREE.getNumber());
+
+            FullEmployee employee = new FullEmployee(name, rm, title, primarySkill);
+            employeeList.add(employee);
+
             excelRow++;
         }
         while (true);
-        return employee;
+        return employeeList;
     }
 
     public HashMap<EmpTitle, String> getBenchList() {
@@ -49,7 +56,7 @@ public class EmployeeBhv {
 
             String np = getField(excelRow, 19);
             if (np.equals("1.0")) {
-                npList.put(new EmpTitle(name,status), np);
+                npList.put(new EmpTitle(name, status), np);
             }
             excelRow++;
         }
@@ -103,6 +110,6 @@ public class EmployeeBhv {
     }
 
     public boolean isLastEmpRow(int rownum) {
-        return isEmptyEmpRow(rownum) && isEmptyEmpRow(rownum+1) && isEmptyEmpRow(rownum+2);
+        return isEmptyEmpRow(rownum) && isEmptyEmpRow(rownum + 1) && isEmptyEmpRow(rownum + 2);
     }
 }

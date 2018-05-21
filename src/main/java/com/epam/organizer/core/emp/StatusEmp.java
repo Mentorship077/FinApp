@@ -2,18 +2,18 @@ package com.epam.organizer.core.emp;
 
 import com.epam.organizer.models.Customers;
 import com.epam.organizer.models.Employee;
+import com.epam.organizer.models.FullEmployee;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.epam.organizer.commons.CommonConst.*;
 
 public class StatusEmp {
     private int number;
-    private HashMap<String, String> empTitle = new EmployeeBhv().getEmployeeTitle();
+    private List<FullEmployee> empList = new EmployeeBhv().getEmployeeList();
+    private List<FullEmployee> benchList = new EmployeeBhv().getEmployeeList();
 
-    public String levelNormalize(String value) {
+    public String getSeniority(String value) {
         String normValue;
         if (value.equals("Junior Software Test Automation Engineer")) {
             normValue = JUNIOR;
@@ -38,33 +38,24 @@ public class StatusEmp {
     }
 
 
-    public String filterMethod(String title) {
-
-        for (Map.Entry<String, String> entry : empTitle.entrySet()) {
-            if (title.equals(entry.getKey())) {
-                return levelNormalize(entry.getValue());
+    public String findPersonTitle(String title) {
+        for (FullEmployee employee : empList) {
+            if (title.equals(employee.getName())) {
+                return getSeniority(employee.getTitle());
             }
         }
         return DOESN_T_FOUND_EMPLOYEE;
     }
 
-    public String filterMethodBench(String title) {
-
-        for (Map.Entry<String, String> entry : empTitle.entrySet()) {
-            if (title.equals(entry.getValue())) {
-                return levelNormalize(entry.getValue());
-            }
-        }
-        return DOESN_T_FOUND_EMPLOYEE;
-    }
 
     public void assignTitleToEmployeeAndFixedRev(List<Customers> customers) {
         for (Customers customer : customers) {
             for (int j = 0; j < customer.getStreamsList().size(); j++) {
                 for (int k = 0; k < customer.getStreamsList().get(j).getEmployeesList().size(); k++) {
                     String title = customer.getStreamsList().get(j).getEmployeesList().get(k).getRowLabels();
-                    if (!filterMethod(title).isEmpty()) {
-                        customer.getStreamsList().get(j).getEmployeesList().get(k).setTitle(filterMethod(title));
+                    if (!findPersonTitle(title).isEmpty()) {
+                        String titleResult = findPersonTitle(title);
+                        customer.getStreamsList().get(j).getEmployeesList().get(k).setTitle(titleResult);
                         customer.getStreamsList().get(j).getEmployeesList().get(k).setEmployeeCount(number);
                     }
                 }
