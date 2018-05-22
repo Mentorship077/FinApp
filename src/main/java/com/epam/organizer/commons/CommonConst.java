@@ -12,7 +12,7 @@ public class CommonConst {
             "Cost", "PM Real", "PM 152 HOURS without 0 rates", "Seniority per person", "Employee count",
             "Seniority per project", "Project PM", "Project PM 152");
 
-    public static final List<String> RM_HEADER_NAME = Arrays.asList("RM","TA Name","Seniority Level","Average Seniority","Revenue","Revenue 152","Cost");
+    public static final List<String> RM_HEADER_NAME = Arrays.asList("RM","TA Name","Seniority Level","Emp Count","Average Seniority","Revenue","Revenue 152","Cost");
     //    Salary List
     public static final List<String> LEVELS_LIST = Arrays.asList("Level", "Salary", "Overhead", "Cost");
 
