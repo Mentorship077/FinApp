@@ -85,7 +85,7 @@ public class StatusEmp {
                         customer.getStreamsList().get(j).getEmployeesList().get(k).setName(person);
                         customer.getStreamsList().get(j).getEmployeesList().get(k).setTitle(titleResult);
                         customer.getStreamsList().get(j).getEmployeesList().get(k).setRm(RM);
-                        customer.getStreamsList().get(j).getEmployeesList().get(k).setEmployeeCount(number);
+                        customer.getStreamsList().get(j).getEmployeesList().get(k).setEmployeeSeniority(number);
                     }
                 }
             }

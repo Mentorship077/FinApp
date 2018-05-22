@@ -4,7 +4,7 @@ public class Employee extends DescriptionModel{
 
     private String name;
     private String title;
-    private Integer employeeCount;
+    private Integer employeeSeniority;
     private boolean finalRevenue;
     private String rm;
 
@@ -32,12 +32,12 @@ public class Employee extends DescriptionModel{
         this.finalRevenue = finalRevenue;
     }
 
-    public Integer getEmployeeCount() {
-        return employeeCount;
+    public Integer getEmployeeSeniority() {
+        return employeeSeniority;
     }
 
-    public void setEmployeeCount(Integer employeeCount) {
-        this.employeeCount = employeeCount;
+    public void setEmployeeSeniority(Integer employeeSeniority) {
+        this.employeeSeniority = employeeSeniority;
         }
 
     public String getTitle() {

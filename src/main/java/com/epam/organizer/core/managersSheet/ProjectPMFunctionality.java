@@ -2,17 +2,21 @@ package com.epam.organizer.core.managersSheet;
 
 import com.epam.organizer.core.base.BaseExcel;
 import com.epam.organizer.models.customer.Customers;
+import com.epam.organizer.models.graph.GraphEmp;
 import org.apache.poi.ss.usermodel.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.epam.organizer.commons.CommonConst.MANAGERS_SHEET_NAME;
 import static com.epam.organizer.commons.CommonConst.REVENUE_PATH;
 
 public class ProjectPMFunctionality {
+    List<GraphEmp> graphEmpList = new ArrayList<>();
     private BaseExcel baseExcel = new BaseExcel(REVENUE_PATH).openFile();
     private Sheet sheetGet = baseExcel.getSheet(MANAGERS_SHEET_NAME);
     private int BEGIN_ROW_CREATED_SHEET = 0;
+    private Integer TOTAL_SENIORITY = 0;
 
     public void setPM(List<Customers> customers) {
 
@@ -51,19 +55,26 @@ public class ProjectPMFunctionality {
                     double cost = Double.parseDouble(cell1);
                     sumCostPerStream = sumCostPerStream + cost;
 
+                    Integer empCount = customer.getStreamsList().get(j).getEmployeesList().get(k).getEmployeeSeniority();
+                    TOTAL_SENIORITY = TOTAL_SENIORITY + empCount;
+
                 }
 //                    Project PM
-                double result = ((sumRevenuePerStream - sumCostPerStream) / sumRevenuePerStream) * 100;
+                double projectPM = ((sumRevenuePerStream - sumCostPerStream) / sumRevenuePerStream) * 100;
                 double result152 = ((sumRevenue152perStream - sumCostPerStream) / sumRevenue152perStream) * 100;
+                Integer empSize1 = customer.getStreamsList().get(j).getEmployeesList().size();
 
-                int empSize1 = customer.getStreamsList().get(j).getEmployeesList().size();
+                String rowLabel = customer.getStreamsList().get(j).getRowLabels();
+
+                graphEmpList.add(new GraphEmp(rowLabel, TOTAL_SENIORITY, projectPM, empSize1));
+
                 for (int k = 0; k < empSize1; k++) {
                     rowSize++;
                     Row rowPM = getRow(rowSize);
 
                     Cell cell17 = rowPM.createCell(17);
                     cell17.setCellStyle(getCountCellStyle());
-                    cell17.setCellValue(result);
+                    cell17.setCellValue(projectPM);
 
 //                    Customer PM 152
                     Cell cell18 = rowPM.createCell(18);
@@ -183,6 +194,7 @@ public class ProjectPMFunctionality {
         style.setBorderTop(BorderStyle.MEDIUM);
         return style;
     }
+
     public CellStyle getCountCellStyle() {
         CellStyle style = baseExcel.createCellStyle();
 

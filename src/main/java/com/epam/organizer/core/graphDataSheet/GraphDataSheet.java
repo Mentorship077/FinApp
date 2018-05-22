@@ -1,4 +1,4 @@
-package com.epam.organizer.core.rmSheet;
+package com.epam.organizer.core.graphDataSheet;
 
 import com.epam.organizer.core.base.BaseExcel;
 import com.epam.organizer.models.customer.Customers;
@@ -14,59 +14,14 @@ import java.util.List;
 import static com.epam.organizer.commons.CommonConst.*;
 import static java.util.stream.Collectors.toList;
 
-public class RMSheet {
+public class GraphDataSheet {
     int rowEmpCount;
     private BaseExcel baseExcel = new BaseExcel(REVENUE_PATH).openFile();
     private Sheet sheet = baseExcel.createSheet(RM_SHEETS);
     private int BEGIN_ROW_CREATED_SHEET = 1;
-    private double TOTAL_EMP_COUNT;
-    private double TOTAL_SENIORITY;
-
-    private static List<String> getDistinctRM(List<Customers> customers) {
-        List<String> allRMs = new ArrayList<>();
-        customers.forEach(customer -> customer.getStreamsList()
-                .forEach(stream -> stream.getEmployeesList()
-                        .forEach(employee ->
-                                allRMs.add(employee.getRm()))));
-
-        return allRMs.stream().distinct().collect(toList());
-    }
-
-    public static void main(String[] args) {
-        RMSheet rmSheet = new RMSheet();
-//        rmSheet.writeSheetRMs();
 
 
-    }
-
-    private static List<Employee> getAllEmpForRM(List<Employee> employees, String id) {
-        return employees
-                .stream()
-                .filter(x -> x.getRm().equalsIgnoreCase(id))
-                .collect(toList());
-    }
-
-    public List<RMPersonList> processAllEmployees(List<Customers> customers) {
-        List<String> rms = getDistinctRM(customers);
-        List<RMPersonList> rmsEmpList = new ArrayList<>();
-
-        rms.forEach(rm -> {
-            List<Employee> empList = new ArrayList<>();
-            customers.forEach(customer -> customer.getStreamsList()
-                    .forEach(stream -> {
-
-                        List<Employee> list = getAllEmpForRM(stream.getEmployeesList(), rm);
-                        empList.addAll(list);
-                    }));
-
-
-            RMPersonList model = new RMPersonList(rm, empList);
-            rmsEmpList.add(model);
-        });
-        return rmsEmpList;
-    }
-
-    public void writeSheetRMs(List<RMPersonList> rmPersonLists) {
+    public void writeSheetGraphs(List<RMPersonList> rmPersonLists) {
         Row row = sheet.createRow(0);
         row.setHeightInPoints(60);
         for (int i = 0; i < RM_HEADER_NAME.size(); i++) {

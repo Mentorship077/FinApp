@@ -1,5 +1,6 @@
 package com.epam.organizer;
 
+import com.epam.organizer.core.emp.StatusEmp;
 import com.epam.organizer.core.managersSheet.ProjectPMFunctionality;
 import com.epam.organizer.core.rev.RevenueParser;
 import com.epam.organizer.models.customer.Customers;
@@ -16,9 +17,14 @@ public class MainPM {
         REVENUE_PATH = OUTPUT_DIRECTORY + "\\" + getExcelPath();
         RevenueParser parser = new RevenueParser();
         ProjectPMFunctionality functionality = new ProjectPMFunctionality();
-
+        StatusEmp statusEmp = new StatusEmp();
 
         List<Customers> customers = parser.getCustomerModel();
+
+        statusEmp.assignTitleToEmployeeAndFixedRev(customers);
+        statusEmp.setFixedRev(customers);
+
+
         functionality.setPM(customers);
     }
 }

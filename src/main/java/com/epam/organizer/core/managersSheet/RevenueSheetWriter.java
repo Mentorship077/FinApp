@@ -441,13 +441,13 @@ public class RevenueSheetWriter {
 
 //                  Seniority per person
                     Cell cell14 = row1.createCell(14);
-                    Integer empCount = customer.getStreamsList().get(j).getEmployeesList().get(k).getEmployeeCount();
+                    Integer empCount = customer.getStreamsList().get(j).getEmployeesList().get(k).getEmployeeSeniority();
                     TOTAL_SENIORITY = TOTAL_SENIORITY + empCount;
                     cell14.setCellValue(empCount);
                     cell14.setCellStyle(getStandardCellStyle());
 
 
-                    empCountSum = empCountSum + customer.getStreamsList().get(j).getEmployeesList().get(k).getEmployeeCount();
+                    empCountSum = empCountSum + customer.getStreamsList().get(j).getEmployeesList().get(k).getEmployeeSeniority();
 
                 }
 //                Employee count
