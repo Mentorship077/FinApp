@@ -1,4 +1,4 @@
-package com.epam.organizer.models;
+package com.epam.organizer.models.customer;
 
 public class DescriptionModel {
     String rowLabels;

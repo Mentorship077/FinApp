@@ -2,7 +2,7 @@ package com.epam.organizer;
 
 import com.epam.organizer.core.managersSheet.ProjectPMFunctionality;
 import com.epam.organizer.core.rev.RevenueParser;
-import com.epam.organizer.models.Customers;
+import com.epam.organizer.models.customer.Customers;
 
 import java.util.List;
 

@@ -4,9 +4,7 @@ package com.epam.organizer;
 import com.epam.organizer.core.emp.StatusEmp;
 import com.epam.organizer.core.managersSheet.RevenueSheetWriter;
 import com.epam.organizer.core.rev.RevenueParser;
-import com.epam.organizer.core.rmSheet.RMSheet;
-import com.epam.organizer.models.Customers;
-import com.epam.organizer.models.rm.RMPersonList;
+import com.epam.organizer.models.customer.Customers;
 
 import java.util.List;
 

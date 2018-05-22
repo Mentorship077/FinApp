@@ -1,7 +1,7 @@
 package com.epam.organizer.core.emp;
 
-import com.epam.organizer.models.Customers;
-import com.epam.organizer.models.Employee;
+import com.epam.organizer.models.customer.Customers;
+import com.epam.organizer.models.customer.Employee;
 import com.epam.organizer.models.rm.FullEmployee;
 
 import java.util.ArrayList;

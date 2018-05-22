@@ -2,7 +2,7 @@ package com.epam.organizer.core.managersSheet;
 
 import com.epam.organizer.core.base.BaseExcel;
 import com.epam.organizer.core.emp.StatusEmp;
-import com.epam.organizer.models.Customers;
+import com.epam.organizer.models.customer.Customers;
 import com.epam.organizer.models.rm.FullEmployee;
 import com.epam.organizer.models.salaryTable.Position;
 import org.apache.poi.ss.usermodel.*;

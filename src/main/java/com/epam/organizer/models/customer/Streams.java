@@ -1,4 +1,4 @@
-package com.epam.organizer.models;
+package com.epam.organizer.models.customer;
 
 import java.util.List;
 

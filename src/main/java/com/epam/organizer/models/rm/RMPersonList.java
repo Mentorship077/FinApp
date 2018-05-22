@@ -1,6 +1,6 @@
 package com.epam.organizer.models.rm;
 
-import com.epam.organizer.models.Employee;
+import com.epam.organizer.models.customer.Employee;
 
 import java.util.List;
 

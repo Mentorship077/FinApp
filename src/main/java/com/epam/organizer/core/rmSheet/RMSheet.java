@@ -1,8 +1,8 @@
 package com.epam.organizer.core.rmSheet;
 
 import com.epam.organizer.core.base.BaseExcel;
-import com.epam.organizer.models.Customers;
-import com.epam.organizer.models.Employee;
+import com.epam.organizer.models.customer.Customers;
+import com.epam.organizer.models.customer.Employee;
 import com.epam.organizer.models.rm.RMPersonList;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;

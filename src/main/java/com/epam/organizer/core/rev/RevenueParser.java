@@ -3,9 +3,9 @@ package com.epam.organizer.core.rev;
 
 import com.epam.organizer.core.base.BaseExcel;
 import com.epam.organizer.core.utils.ExcelFileUtils;
-import com.epam.organizer.models.Customers;
-import com.epam.organizer.models.Employee;
-import com.epam.organizer.models.Streams;
+import com.epam.organizer.models.customer.Customers;
+import com.epam.organizer.models.customer.Employee;
+import com.epam.organizer.models.customer.Streams;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
