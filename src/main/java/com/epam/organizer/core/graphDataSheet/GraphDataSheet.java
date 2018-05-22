@@ -1,100 +1,59 @@
 package com.epam.organizer.core.graphDataSheet;
 
 import com.epam.organizer.core.base.BaseExcel;
-import com.epam.organizer.models.customer.Customers;
-import com.epam.organizer.models.customer.Employee;
-import com.epam.organizer.models.rm.RMPersonList;
+import com.epam.organizer.models.graph.GraphEmp;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.epam.organizer.commons.CommonConst.*;
-import static java.util.stream.Collectors.toList;
 
 public class GraphDataSheet {
     int rowEmpCount;
     private BaseExcel baseExcel = new BaseExcel(REVENUE_PATH).openFile();
-    private Sheet sheet = baseExcel.createSheet(RM_SHEETS);
+    private Sheet sheet = baseExcel.createSheet(CHART_SHEET);
     private int BEGIN_ROW_CREATED_SHEET = 1;
 
 
-    public void writeSheetGraphs(List<RMPersonList> rmPersonLists) {
+    public void writeSheetGraphs(List<GraphEmp> graphEmpList) {
         Row row = sheet.createRow(0);
         row.setHeightInPoints(60);
-        for (int i = 0; i < RM_HEADER_NAME.size(); i++) {
+        for (int i = 0; i < GRAPH_HEADER_NAME.size(); i++) {
             Cell cell = row.createCell(i);
-            cell.setCellValue(RM_HEADER_NAME.get(i));
+            cell.setCellValue(GRAPH_HEADER_NAME.get(i));
             cell.setCellStyle(getCellSHeaderStyle());
         }
+
 //        RM
         sheet.setColumnWidth(0, 5000);
 //            TA Name
         sheet.setColumnWidth(1, 7000);
 
-        for (int i = 0; i < rmPersonLists.size(); i++) {
-            int rowCount = BEGIN_ROW_CREATED_SHEET;
-            rowEmpCount = BEGIN_ROW_CREATED_SHEET;
-            int empSenCountPerRM = 0;
+        for (int i = 0; i < graphEmpList.size(); i++) {
+            Row row1 = createCustomRow();
+            GraphEmp graphEmp = graphEmpList.get(i);
+//              Project
+            Cell cell1 = row1.createCell(0);
+            cell1.setCellValue(graphEmp.getProjectName());
+            cell1.setCellStyle(getProjectCellStyle());
 
-            rowCount++;
-            for (int j = 0; j < rmPersonLists.get(i).getEmployees().size(); j++) {
-                Row row1 = createCustomRow();
-
-//              RM
-                Cell cell1 = row1.createCell(0);
-                cell1.setCellValue(rmPersonLists.get(i).getEmployees().get(j).getRm());
-                cell1.setCellStyle(getProjectCellStyle());
-
-//              TA Name
-                Cell cell2 = row1.createCell(1);
-                cell2.setCellValue(rmPersonLists.get(i).getEmployees().get(j).getName());
-                cell2.setCellStyle(getStandardCellStyle());
+//              Seniority Per Project
+            Cell cell2 = row1.createCell(1);
+            cell2.setCellValue(graphEmp.getSeniorityPerProject());
+            cell2.setCellStyle(getStandardCellStyle());
 
 //              Sen Count
-                Cell cell3 = row1.createCell(2);
-                cell3.setCellValue(rmPersonLists.get(i).getEmployees().get(j).getEmployeeSeniority());
-                cell3.setCellStyle(getStandardCellStyle());
+            Cell cell3 = row1.createCell(2);
+            cell3.setCellValue(graphEmp.getProjectPM());
+            cell3.setCellStyle(getStandardCellStyle());
 
-                empSenCountPerRM = empSenCountPerRM + rmPersonLists.get(i).getEmployees().get(j).getEmployeeSeniority();
-            }
+            //              Emp Count
+            Cell cell4 = row1.createCell(3);
+            cell4.setCellValue(graphEmp.getEmpCount());
+            cell4.setCellStyle(getStandardCellStyle());
 
 
-//            Employee count
-            Integer EMP_COUNT = rmPersonLists.get(i).getEmployees().size();
-
-//                Seniority per rm
-            double average = (double) empSenCountPerRM / EMP_COUNT;
-
-//                Second loop for setting total Emp count and Sen per project for merging cells
-            for (int k = 0; k < rmPersonLists.get(i).getEmployees().size(); k++) {
-                Row row1 = getRow();
-
-//                Emp Count
-                Cell cell15 = row1.createCell(3);
-                cell15.setCellStyle(getCountCellStyle());
-                cell15.setCellValue(EMP_COUNT);
-
-//                Average Seniority
-                Cell cell16 = row1.createCell(4);
-                cell16.setCellStyle(getCountCellStyle());
-                cell16.setCellValue(new DecimalFormat("##.##").format(average));
-
-//                Revenue
-
-            }
-
-            // Cell merging
-            int size = rowCount + (rmPersonLists.get(i).getEmployees().size() - 1);
-            if (rowCount != size) {
-                sheet.addMergedRegion(CellRangeAddress.valueOf("A" + rowCount + ":A" + size));
-                sheet.addMergedRegion(CellRangeAddress.valueOf("D" + rowCount + ":D" + size));
-                sheet.addMergedRegion(CellRangeAddress.valueOf("E" + rowCount + ":E" + size));
-            }
         }
-
 
         baseExcel.saveChangesToFile();
     }

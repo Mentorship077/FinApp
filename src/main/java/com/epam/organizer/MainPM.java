@@ -1,9 +1,11 @@
 package com.epam.organizer;
 
 import com.epam.organizer.core.emp.StatusEmp;
+import com.epam.organizer.core.graphDataSheet.GraphDataSheet;
 import com.epam.organizer.core.managersSheet.ProjectPMFunctionality;
 import com.epam.organizer.core.rev.RevenueParser;
 import com.epam.organizer.models.customer.Customers;
+import com.epam.organizer.models.graph.GraphEmp;
 
 import java.util.List;
 
@@ -18,6 +20,8 @@ public class MainPM {
         RevenueParser parser = new RevenueParser();
         ProjectPMFunctionality functionality = new ProjectPMFunctionality();
         StatusEmp statusEmp = new StatusEmp();
+        GraphDataSheet graphEmpList = new GraphDataSheet();
+
 
         List<Customers> customers = parser.getCustomerModel();
 
@@ -26,5 +30,8 @@ public class MainPM {
 
 
         functionality.setPM(customers);
+
+        List<GraphEmp> list = functionality.getGraphEmpList();
+        graphEmpList.writeSheetGraphs(list);
     }
 }

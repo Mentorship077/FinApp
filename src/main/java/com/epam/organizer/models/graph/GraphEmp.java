@@ -1,32 +1,32 @@
 package com.epam.organizer.models.graph;
 
 public class GraphEmp {
-    private String project;
-    private Integer seniorityPerStream;
+    private String projectName;
+    private Integer seniorityPerProject;
     private Double projectPM;
     private Integer empCount;
 
-    public GraphEmp(String project, Integer seniorityPerStream, Double projectPM, Integer empCount) {
-        this.project = project;
-        this.seniorityPerStream = seniorityPerStream;
+    public GraphEmp(String projectName, Integer seniorityPerProject, Double projectPM, Integer empCount) {
+        this.projectName = projectName;
+        this.seniorityPerProject = seniorityPerProject;
         this.projectPM = projectPM;
         this.empCount = empCount;
     }
 
-    public String getProject() {
-        return project;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setProject(String project) {
-        this.project = project;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
-    public Integer getSeniorityPerStream() {
-        return seniorityPerStream;
+    public Integer getSeniorityPerProject() {
+        return seniorityPerProject;
     }
 
-    public void setSeniorityPerStream(Integer seniorityPerStream) {
-        this.seniorityPerStream = seniorityPerStream;
+    public void setSeniorityPerProject(Integer seniorityPerProject) {
+        this.seniorityPerProject = seniorityPerProject;
     }
 
     public Double getProjectPM() {

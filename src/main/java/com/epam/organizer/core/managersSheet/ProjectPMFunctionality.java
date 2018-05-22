@@ -1,6 +1,7 @@
 package com.epam.organizer.core.managersSheet;
 
 import com.epam.organizer.core.base.BaseExcel;
+import com.epam.organizer.core.graphDataSheet.GraphDataSheet;
 import com.epam.organizer.models.customer.Customers;
 import com.epam.organizer.models.graph.GraphEmp;
 import org.apache.poi.ss.usermodel.*;
@@ -12,7 +13,7 @@ import static com.epam.organizer.commons.CommonConst.MANAGERS_SHEET_NAME;
 import static com.epam.organizer.commons.CommonConst.REVENUE_PATH;
 
 public class ProjectPMFunctionality {
-    List<GraphEmp> graphEmpList = new ArrayList<>();
+    private List<GraphEmp> graphEmpList = new ArrayList<>();
     private BaseExcel baseExcel = new BaseExcel(REVENUE_PATH).openFile();
     private Sheet sheetGet = baseExcel.getSheet(MANAGERS_SHEET_NAME);
     private int BEGIN_ROW_CREATED_SHEET = 0;
@@ -85,6 +86,10 @@ public class ProjectPMFunctionality {
         }
 
         baseExcel.saveChangesToFile();
+    }
+
+    public List<GraphEmp> getGraphEmpList(){
+        return graphEmpList;
     }
 
     public String getField(int rowNumber, Integer cellNumber) {

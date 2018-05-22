@@ -13,6 +13,7 @@ public class CommonConst {
             "Seniority per project", "Project PM", "Project PM 152");
 
     public static final List<String> RM_HEADER_NAME = Arrays.asList("RM","TA Name","Seniority Level","Emp Count","Average Seniority","Revenue","Revenue 152","Cost");
+    public static final List<String> GRAPH_HEADER_NAME = Arrays.asList("Stream","Seniority per project","Project PM","Emp Count");
     //    Salary List
     public static final List<String> LEVELS_LIST = Arrays.asList("Level", "Salary", "Overhead", "Cost");
 
@@ -30,6 +31,7 @@ public class CommonConst {
     public static final String MANAGERS_SHEET_NAME = "CreatedSheet";
 
     public static final String RM_SHEETS = "RMs";
+    public static final String CHART_SHEET = "ChartSheet";
 
     public static final String JUNIOR = "Junior";
     public static final String INTERMEDIATE = "Intermediate";
