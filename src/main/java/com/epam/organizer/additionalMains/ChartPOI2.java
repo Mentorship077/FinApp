@@ -1,4 +1,4 @@
-package com.epam.organizer;
+package com.epam.organizer.additionalMains;
 
 import com.aspose.cells.*;
 import com.epam.organizer.core.rev.RevenueParser;
