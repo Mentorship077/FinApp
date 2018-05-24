@@ -6,13 +6,13 @@ import com.epam.organizer.core.rev.RevenueParser;
 import static com.epam.organizer.commons.CommonConst.*;
 import static com.epam.organizer.core.utils.Utils.getExcelPath;
 
-public class ChartPOI2 {
+public class ChartPOIDrawChartMain {
 
     public static void main(String[] args) {
         REVENUE_PATH = OUTPUT_DIRECTORY + "\\" + getExcelPath();
         RevenueParser parser = new RevenueParser();
         parser.createChartSheet();
-        new ChartPOI2().method(REVENUE_PATH);
+        new ChartPOIDrawChartMain().method(REVENUE_PATH);
     }
 
     public void method(String file){
