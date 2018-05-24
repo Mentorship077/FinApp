@@ -1,7 +1,7 @@
 # FinApp
 It's Excel project for managing and accountancy empl and different calculation.
 
-link to working version of **FinApp 1.0**
+link to working version of **FinApp 1.0**. You should click on start.bat file
 https://drive.google.com/drive/folders/1NQngpxmp2mKGz60cRZYqUJnjQk_YL9bk?usp=sharing
 
 
