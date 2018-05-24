@@ -10,10 +10,9 @@ https://drive.google.com/drive/folders/1NQngpxmp2mKGz60cRZYqUJnjQk_YL9bk?usp=sha
 1. Put only **one Excel** file in folder, (you don't need set default name for excel file), because it takes any file with extension **xlsx** or **xlx**
 2. It copy putted file in **output** folder
 3. A program take file in output and calculate all needed calculation:
-    * financial    **Financial**       
-    * Resource Manager emp  in **RM**
-    * project chart  **Chart**
-
+    * financial          
+    * Resource Manager emp
+    * projects chart  
 
  ## Prerequisites
  * Java 1.8  (for running **jar** files in bat files)
