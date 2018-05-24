@@ -4,6 +4,8 @@ It's Excel project for managing and accountancy empl and different calculation.
 link to working version of **FinApp 1.0**
 https://drive.google.com/drive/folders/1NQngpxmp2mKGz60cRZYqUJnjQk_YL9bk?usp=sharing
 
+
+**ATTENTION  You have set sheet name *Revenue* where is all project information and should start from *10* line**
 ### Instructions or (How it works)
 1. Put only **one Excel** file in folder, (you don't need set default name for excel file), because it takes any file with extension **xlsx** or **xlx**
 2. It copy putted file in **output** folder
