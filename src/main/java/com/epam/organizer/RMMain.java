@@ -15,7 +15,6 @@ import static com.epam.organizer.core.utils.Utils.getExcelPath;
 
 public class RMMain {
     public static void main(String[] args) {
-        copyFileUsingApacheCommonsIO(getExcelPath(), OUTPUT_DIRECTORY);
         REVENUE_PATH = OUTPUT_DIRECTORY + "\\" + getExcelPath();
 
         RevenueParser parser = new RevenueParser();
