@@ -9,7 +9,7 @@ https://drive.google.com/drive/folders/1NQngpxmp2mKGz60cRZYqUJnjQk_YL9bk?usp=sha
 ### Instructions or (How it works)
 1. Put only **one Excel** file in folder, (you don't need set default name for excel file), because it takes any file with extension **xlsx** or **xlx**
 2. It copy putted file in **output** folder
-3. A program take file in output and calculate all needed calculation:
+3. A program take **file in output** and calculate all needed calculation:
     * financial          
     * Resource Manager emp
     * projects chart  
