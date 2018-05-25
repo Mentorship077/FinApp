@@ -124,7 +124,8 @@ public class RevenueSheetWriter {
 
 
         BEGIN_ROW_CREATED_SHEET++;
-//        writeConclusionTotal();
+        writeConclusionTotal();
+        baseExcel.saveChangesToFile();
     }
 
     public void writeConclusionTotal() {
@@ -174,7 +175,7 @@ public class RevenueSheetWriter {
         cell3.setCellValue("Ideal Revenue, based on 152 hours and no 0 rates");
         cell3.setCellStyle(getCellSTotalStyle());
 
-        String TOTAL_IDEAL_REVENUE = "SUM(J2:J" + LAST_EMP_ROW + ")";
+        String TOTAL_IDEAL_REVENUE = "SUM(J2:J" + LAST_EMP_ROW + ")+SUM(H2:H" + LAST_EMP_ROW + ")";
         Cell cellTotalIdealRev = row3.createCell(5);
         cellTotalIdealRev.setCellFormula(TOTAL_IDEAL_REVENUE);
         cellTotalIdealRev.setCellStyle(getDollarForFormulaStyle());
