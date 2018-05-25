@@ -1,7 +1,6 @@
 package com.epam.organizer.core.managersSheet;
 
 import com.epam.organizer.core.base.BaseExcel;
-import com.epam.organizer.core.graphDataSheet.GraphDataSheet;
 import com.epam.organizer.models.customer.Customers;
 import com.epam.organizer.models.graph.GraphEmp;
 import org.apache.poi.ss.usermodel.*;
@@ -17,7 +16,6 @@ public class ProjectPMFunctionality {
     private BaseExcel baseExcel = new BaseExcel(REVENUE_PATH).openFile();
     private Sheet sheetGet = baseExcel.getSheet(MANAGERS_SHEET_NAME);
     private int BEGIN_ROW_CREATED_SHEET = 0;
-    private Integer TOTAL_SENIORITY = 0;
 
     public void setPM(List<Customers> customers) {
 
@@ -32,6 +30,7 @@ public class ProjectPMFunctionality {
                 double sumLostRevenue = 0;
 
                 int empSize = customer.getStreamsList().get(j).getEmployeesList().size();
+                Integer TOTAL_SENIORITY = 0;
 
                 for (int k = 0; k < empSize; k++) {
                     BEGIN_ROW_CREATED_SHEET++;
@@ -88,7 +87,7 @@ public class ProjectPMFunctionality {
         baseExcel.saveChangesToFile();
     }
 
-    public List<GraphEmp> getGraphEmpList(){
+    public List<GraphEmp> getGraphEmpList() {
         return graphEmpList;
     }
 
