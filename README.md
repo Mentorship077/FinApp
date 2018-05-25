@@ -6,6 +6,7 @@ https://drive.google.com/drive/folders/1NQngpxmp2mKGz60cRZYqUJnjQk_YL9bk?usp=sha
 
 
 **ATTENTION  You have set sheet name *Revenue* where is all project information and should start from *10* line**
+**ATTENTION  You have set sheet name *Sheet* for input file Employee**
 ### Instructions or (How it works)
 1. Put only **one Excel** file in folder, (you don't need set default name for excel file), because it takes any file with extension **xlsx** or **xlx**
 2. It copy putted file in **output** folder
