@@ -58,6 +58,11 @@ public class ProjectPMFunctionality {
                     Integer empCount = customer.getStreamsList().get(j).getEmployeesList().get(k).getEmployeeSeniority();
                     TOTAL_SENIORITY = TOTAL_SENIORITY + empCount;
 
+//                                       Cost
+                    int numb = BEGIN_ROW_CREATED_SHEET+1;
+                    String cellNumb = "K" + numb;
+                    sheetGet.getRow(BEGIN_ROW_CREATED_SHEET).createCell(11).setCellFormula("IF(+" + cellNumb + "=T3,W3,IF(" + cellNumb + "=T4,W4,if(" + cellNumb + "=T5,W5,if(" + cellNumb + "=T6,W6,if(" + cellNumb + "=T7,W7)))))");
+
                 }
 //                    Project PM
                 double projectPM = ((sumRevenuePerStream - sumCostPerStream) / sumRevenuePerStream) * 100;
