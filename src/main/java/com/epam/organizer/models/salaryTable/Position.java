@@ -2,10 +2,10 @@ package com.epam.organizer.models.salaryTable;
 
 public class Position {
     private String level;
-    private int salary;
-    private int overhead;
+    private Integer salary;
+    private Integer overhead;
 
-    public Position(String level, int salary, int overhead) {
+    public Position(String level, Integer salary, Integer overhead) {
         this.level = level;
         this.salary = salary;
         this.overhead = overhead;
@@ -15,21 +15,24 @@ public class Position {
         return level;
     }
 
-    public int getSalary() {
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public Integer getSalary() {
         return salary;
     }
 
-    public int getOverhead() {
+    public void setSalary(Integer salary) {
+        this.salary = salary;
+    }
+
+    public Integer getOverhead() {
         return overhead;
     }
 
-
-
-    @Override
-    public String toString() {
-        return "Position{" +
-                "level='" + level + '\'' +
-                ", salary='" + salary + '\'' +
-                ", overhead='" + overhead + '\'';
+    public void setOverhead(Integer overhead) {
+        this.overhead = overhead;
     }
 }
+

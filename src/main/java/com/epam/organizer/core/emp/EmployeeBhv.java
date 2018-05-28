@@ -87,7 +87,6 @@ public class EmployeeBhv {
                     string = String.valueOf(cellValue.getErrorCellValue());
                     break;
 
-                // CELL_TYPE_FORMULA will never happen
                 case FORMULA:
                     baseExcel.evaluateAllFormulaCells().evaluateInCell(cellValue);
                     string = String.valueOf(cellValue.getNumericCellValue());

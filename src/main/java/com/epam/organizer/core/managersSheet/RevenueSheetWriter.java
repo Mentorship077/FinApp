@@ -12,11 +12,12 @@ import org.apache.poi.ss.usermodel.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.epam.organizer.commons.CommonConst.*;
 import static com.epam.organizer.commons.LevelConst.*;
 
-public class RevenueSheetWriter extends BenchFunctionlity {
+public class RevenueSheetWriter {
     StatusEmp statusEmp = new StatusEmp();
     String TITLE = "zero";
     String RATE = "zero";
@@ -32,58 +33,100 @@ public class RevenueSheetWriter extends BenchFunctionlity {
 
     private int BEGIN_ROW_CREATED_SHEET = 1;
 
-    public void writeLevelsRevenue() {
-        List<Position> positionList = new ArrayList<>();
-        positionList.add(new Position(JUNIOR, JUN_SALARY, JUN_OVERHEAD));
-        positionList.add(new Position(INTERMEDIATE, INTER_SALARY, INTER_OVERHEAD));
-        positionList.add(new Position(SENIOR, SENIOR_SALARY, SENIOR_OVERHEAD));
-        positionList.add(new Position(LEAD, LEAD_SALARY, LEAD_OVERHEAD));
-        positionList.add(new Position(ABOVE_LEAD, ABOVE_LEAD_SALARY, ABOVE_LEAD_OVERHEAD));
+    public void writeLevelsRevenue(List<Position> list) {
+        if (list.size() > 0) {
+            Row benchRow = sheet.getRow(0);
+            for (int i = 19; i < (LEVELS_LIST.size() + 19); i++) {
+                Cell cell = benchRow.createCell(i);
+                cell.setCellValue(LEVELS_LIST.get(i - 19));
+                cell.setCellStyle(getCellSHeaderStyle());
+            }
 
-        Row benchRow = sheet.getRow(0);
-        for (int i = 19; i < (LEVELS_LIST.size() + 19); i++) {
-            Cell cell = benchRow.createCell(i);
-            cell.setCellValue(LEVELS_LIST.get(i - 19));
-            cell.setCellStyle(getCellSHeaderStyle());
+            Row row = sheet.getRow(1);
+            getOrCreateCell(row, 22, String.valueOf(DEFAULT_VALUE), getCellSHeaderStyle());
+
+
+            int LAST_ROW = 0;
+
+            for (int i = 0, j = 2; i < list.size(); i++, j++) {
+                Row benchRowForVal = sheet.getRow(j);
+                Cell cell19 = getOrCreateCell(benchRowForVal, 19, list.get(i).getLevel(), getCellSHeaderStyle());
+                Cell cell20 = getOrCreateCell(benchRowForVal, 20, String.valueOf(list.get(i).getSalary()), getCellSHeaderStyle());
+                Cell cell21 = getOrCreateCell(benchRowForVal, 21, String.valueOf(list.get(i).getOverhead()), getCellSHeaderStyle());
+                Cell cell22 = getOrCreateCell(benchRowForVal, 22);
+                String formula = "U" + (j + 1) + "+V" + (j + 1);
+                cell22.setCellFormula(formula);
+                cell22.setCellStyle(getCellSHeaderStyle());
+                LAST_ROW = j;
+
+            }
+            LAST_ROW++;
+            Row averageRow = sheet.getRow(LAST_ROW);
+            Cell cell19 = getOrCreateCell(averageRow, 19, "Average rate ", getCellSHeaderStyle());
+            Cell cell20 = getOrCreateCell(averageRow, 20, String.valueOf(AVERAGE_RATE), getCellSHeaderStyle());
+
+        } else {
+
+            List<Position> positionList = new ArrayList<>();
+            positionList.add(new Position(JUNIOR, JUN_SALARY, JUN_OVERHEAD));
+            positionList.add(new Position(INTERMEDIATE, INTER_SALARY, INTER_OVERHEAD));
+            positionList.add(new Position(SENIOR, SENIOR_SALARY, SENIOR_OVERHEAD));
+            positionList.add(new Position(LEAD, LEAD_SALARY, LEAD_OVERHEAD));
+            positionList.add(new Position(ABOVE_LEAD, ABOVE_LEAD_SALARY, ABOVE_LEAD_OVERHEAD));
+
+            Row benchRow = sheet.getRow(0);
+            for (int i = 19; i < (LEVELS_LIST.size() + 19); i++) {
+                Cell cell = benchRow.createCell(i);
+                cell.setCellValue(LEVELS_LIST.get(i - 19));
+                cell.setCellStyle(getCellSHeaderStyle());
+            }
+
+            Row row = sheet.getRow(1);
+            getOrCreateCell(row, 22, String.valueOf(DEFAULT_VALUE), getCellSHeaderStyle());
+
+            int LAST_ROW = 0;
+            for (int i = 0, j = 2; i < positionList.size(); i++, j++) {
+
+                Row benchRowForVal = sheet.getRow(j);
+                Cell cell19 = getOrCreateCell(benchRowForVal, 19, positionList.get(i).getLevel(), getCellSHeaderStyle());
+                Cell cell20 = getOrCreateCell(benchRowForVal, 20, String.valueOf(positionList.get(i).getSalary()), getCellSHeaderStyle());
+                Cell cell21 = getOrCreateCell(benchRowForVal, 21, String.valueOf(positionList.get(i).getOverhead()), getCellSHeaderStyle());
+                Cell cell22 = getOrCreateCell(benchRowForVal, 22);
+                String formula = "U" + (j + 1) + "+V" + (j + 1);
+                cell22.setCellFormula(formula);
+                cell22.setCellStyle(getCellSHeaderStyle());
+                LAST_ROW = j;
+
+            }
+            LAST_ROW++;
+            Row averageRow = sheet.getRow(LAST_ROW);
+            Cell cell19 = getOrCreateCell(averageRow, 19, "Average rate ", getCellSHeaderStyle());
+            Cell cell20 = getOrCreateCell(averageRow, 20, String.valueOf(AVERAGE_RATE), getCellSHeaderStyle());
         }
-
-        Cell cell = sheet.getRow(1).createCell(22);
-        cell.setCellValue("50");
-        cell.setCellStyle(getCellSHeaderStyle());
-
-        int LAST_ROW = 0;
-        for (int i = 0, j = 2; i < positionList.size(); i++, j++) {
-
-            Row benchRowForVal = sheet.getRow(j);
-            Cell cell19 = benchRowForVal.createCell(19);
-            cell19.setCellValue(positionList.get(i).getLevel());
-            cell19.setCellStyle(getCellSHeaderStyle());
-
-            Cell cell20 = benchRowForVal.createCell(20);
-            cell20.setCellValue(positionList.get(i).getSalary());
-            cell20.setCellStyle(getCellSHeaderStyle());
-
-            Cell cell21 = benchRowForVal.createCell(21);
-            cell21.setCellValue(positionList.get(i).getOverhead());
-            cell21.setCellStyle(getCellSHeaderStyle());
-
-            Cell cell22 = benchRowForVal.createCell(22);
-            String formula = "U" + (j + 1) + "+V" + (j + 1);
-            cell22.setCellFormula(formula);
-            cell22.setCellStyle(getCellSHeaderStyle());
-            LAST_ROW = j;
-        }
-        LAST_ROW++;
-        Row averageRow = sheet.getRow(LAST_ROW);
-        Cell cell19 = averageRow.createCell(19);
-        cell19.setCellValue("Average rate ");
-        cell19.setCellStyle(getCellSHeaderStyle());
-
-        Cell cell20 = averageRow.createCell(20);
-        cell20.setCellValue(500);
-        cell20.setCellStyle(getCellSHeaderStyle());
 
         baseExcel.saveChangesToFile();
+    }
+
+    public Cell getOrCreateCell(Row row, int numb, String value, CellStyle cellStyle) {
+        Cell cell;
+        cell = row.createCell(numb);
+        cell.setCellValue(value);
+        cell.setCellStyle(cellStyle);
+        return cell;
+    }
+
+    public Cell getOrCreateCell(Row row, int numb) {
+        Cell cell;
+        try {
+            cell = row.getCell(numb);
+            if (Objects.isNull(cell)) {
+                cell = row.createCell(numb);
+            }
+            return cell;
+        } catch (Exception e) {
+            cell = row.createCell(numb);
+            return cell;
+        }
     }
 
     public void writeTotal() {

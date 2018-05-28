@@ -2,6 +2,9 @@ package com.epam.organizer.commons;
 
 public class LevelConst {
 
+    public static int DEFAULT_VALUE =50;
+
+    public static int AVERAGE_RATE =50;
 //    Junior
     public static int JUN_SALARY = 1000;
     public static int JUN_OVERHEAD = 30;
