@@ -26,8 +26,8 @@ public class Main {
         try {
             BenchFunctionlity benchFunctionlity = new BenchFunctionlity();
             positionList = benchFunctionlity.getLevelsRevenue();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Throwable ignored) {
+
         }
 
         RevenueParser parser = new RevenueParser();
