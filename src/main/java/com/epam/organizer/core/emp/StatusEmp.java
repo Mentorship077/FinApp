@@ -3,16 +3,15 @@ package com.epam.organizer.core.emp;
 import com.epam.organizer.models.customer.Customers;
 import com.epam.organizer.models.customer.Employee;
 import com.epam.organizer.models.rm.FullEmployee;
+import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static com.epam.organizer.commons.CommonConst.*;
 
 public class StatusEmp {
     private int number;
     private List<FullEmployee> empList = new EmployeeBhv().getEmployeeList();
-    private List<FullEmployee> benchList = new ArrayList<>();
 
     public String getSeniority(String value) {
         String normValue;
@@ -39,17 +38,39 @@ public class StatusEmp {
     }
 
 
-    public String findPersonTitle(String name, FullEmployee emp) {
-        for (FullEmployee employee : empList) {
-            if (name.equals(employee.getName())) {
-                return getSeniority(employee.getTitle());
-            }
-        }
-        if (name.equals(DOESN_T_FOUND_EMPLOYEE)) {
-            benchList.add(emp);
-        }
-        return DOESN_T_FOUND_EMPLOYEE;
+    public List<FullEmployee> getBenchList(List<Customers> customers) {
+        List<FullEmployee> benchList = new ArrayList<>();
+        List<String> empNameProductionList = new ArrayList<>();
+        List<String> empAllList = new ArrayList<>();
+
+        customers.forEach(customer ->
+                customer.getStreamsList().forEach(
+                        streams -> streams.getEmployeesList().forEach(employee -> {
+                            empNameProductionList.add(employee.getName());
+                        })));
+
+        empList.forEach(emp -> empAllList.add(emp.getName()));
+
+        List<String> benchNameList = new ArrayList<>(CollectionUtils.subtract(empAllList, empNameProductionList));
+
+        empList.forEach(emp -> benchNameList.forEach(s -> {
+            if (s.equals(emp.getName()))
+                benchList.add(emp);
+        }));
+
+        return benchList;
     }
+//    public String findPersonTitle(String name, FullEmployee emp) {
+//        for (FullEmployee employee : empList) {
+//            if (name.equals(employee.getName())) {
+//                return getSeniority(employee.getTitle());
+//            }
+//        }
+//        if (name.equals(DOESN_T_FOUND_EMPLOYEE)) {
+//            benchList.add(emp);
+//        }
+//        return DOESN_T_FOUND_EMPLOYEE;
+//    }
 
     public String findPersonTitle(String name) {
         for (FullEmployee employee : empList) {
@@ -60,9 +81,6 @@ public class StatusEmp {
         return DOESN_T_FOUND_EMPLOYEE;
     }
 
-    public List<FullEmployee> getBenchList() {
-        return benchList;
-    }
 
     public String findPersonRM(String name) {
         for (FullEmployee employee : empList) {

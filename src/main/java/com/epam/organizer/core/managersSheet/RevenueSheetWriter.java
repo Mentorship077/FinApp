@@ -1,9 +1,11 @@
 package com.epam.organizer.core.managersSheet;
 
 import com.epam.organizer.core.base.BaseExcel;
+import com.epam.organizer.core.emp.EmployeeBhv;
 import com.epam.organizer.core.emp.StatusEmp;
 import com.epam.organizer.models.customer.Customers;
 import com.epam.organizer.models.customer.Employee;
+import com.epam.organizer.models.rm.FullEmployee;
 import com.epam.organizer.models.salaryTable.Position;
 import org.apache.poi.ss.usermodel.*;
 
@@ -14,7 +16,7 @@ import java.util.List;
 import static com.epam.organizer.commons.CommonConst.*;
 import static com.epam.organizer.commons.LevelConst.*;
 
-public class RevenueSheetWriter {
+public class RevenueSheetWriter extends BenchFunctionlity {
     StatusEmp statusEmp = new StatusEmp();
     String TITLE = "zero";
     String RATE = "zero";
@@ -27,6 +29,7 @@ public class RevenueSheetWriter {
     private String RATE_MISMATCH = "";
     private BaseExcel baseExcel = new BaseExcel(REVENUE_PATH).openFile();
     private Sheet sheet = baseExcel.createSheet(MANAGERS_SHEET_NAME);
+
     private int BEGIN_ROW_CREATED_SHEET = 1;
 
     public void writeLevelsRevenue() {
@@ -125,7 +128,7 @@ public class RevenueSheetWriter {
 
         BEGIN_ROW_CREATED_SHEET++;
         baseExcel.saveChangesToFile();
-//        writeConclusionTotal();
+        writeConclusionTotal();
 //        baseExcel.saveChangesToFile();
     }
 
@@ -237,10 +240,31 @@ public class RevenueSheetWriter {
 
     }
 
-//    public void writeBenchList(int rowNumb) {
-//        List<Employee> list = statusEmp.getBenchList();
-//
-//        for (Employee fullEmployee : list) {
+    public void writeBenchList(int rowNumb, List<Customers> customers) {
+        List<FullEmployee> list = statusEmp.getBenchList(customers);
+
+        for (FullEmployee fullEmployee : list) {
+            BEGIN_ROW_CREATED_SHEET++;
+            Row row = sheet.createRow(rowNumb);
+
+            Cell benchHeader = row.createCell(0);
+            benchHeader.setCellValue("Bench");
+            benchHeader.setCellStyle(getCellSHeaderStyle());
+
+            row.createCell(1).setCellValue(fullEmployee.getName());
+
+//            Title
+            Cell cell12 = row.createCell(10);
+            cell12.setCellValue(fullEmployee.getTitle());
+            cell12.setCellStyle(getStandardCellStyle());
+
+//                   Cost
+            String cellNumb = "K" + BEGIN_ROW_CREATED_SHEET;
+            row.createCell(11).setCellFormula("IF(+" + cellNumb + "=T3,W3,IF(" + cellNumb + "=T4,W4,if(" + cellNumb + "=T5,W5,if(" + cellNumb + "=T6,W6,if(" + cellNumb + "=T7,W7)))))");
+
+            rowNumb++;
+        }
+//        for (Map.Entry<EmpTitle, String> entry : benchList.entrySet()) {
 //            BEGIN_ROW_CREATED_SHEET++;
 //            Row row = sheet.createRow(rowNumb);
 //
@@ -248,11 +272,11 @@ public class RevenueSheetWriter {
 //            benchHeader.setCellValue("Bench");
 //            benchHeader.setCellStyle(getCellSHeaderStyle());
 //
-//            row.createCell(1).setCellValue(fullEmployee.getName());
+//            row.createCell(1).setCellValue(entry.getKey().getName());
 //
 ////            Seniority Level
 //            Cell cell12 = row.createCell(10);
-//            String filter = statusEmp.findPersonTitle(fullEmployee.getTitle(), fullEmployee);
+//            String filter = statusEmp.findPersonTitle(entry.getKey().getStatus());
 //            cell12.setCellValue(filter);
 //            cell12.setCellStyle(getStandardCellStyle());
 //
@@ -262,31 +286,9 @@ public class RevenueSheetWriter {
 //
 //            rowNumb++;
 //        }
-////        for (Map.Entry<EmpTitle, String> entry : benchList.entrySet()) {
-////            BEGIN_ROW_CREATED_SHEET++;
-////            Row row = sheet.createRow(rowNumb);
-////
-////            Cell benchHeader = row.createCell(0);
-////            benchHeader.setCellValue("Bench");
-////            benchHeader.setCellStyle(getCellSHeaderStyle());
-////
-////            row.createCell(1).setCellValue(entry.getKey().getName());
-////
-//////            Seniority Level
-////            Cell cell12 = row.createCell(10);
-////            String filter = statusEmp.findPersonSeniority(entry.getKey().getStatus());
-////            cell12.setCellValue(filter);
-////            cell12.setCellStyle(getStandardCellStyle());
-////
-//////                   Cost
-////            String cellNumb = "K" + BEGIN_ROW_CREATED_SHEET;
-////            row.createCell(11).setCellFormula("IF(+" + cellNumb + "=T3,W3,IF(" + cellNumb + "=T4,W4,if(" + cellNumb + "=T5,W5,if(" + cellNumb + "=T6,W6,if(" + cellNumb + "=T7,W7)))))");
-////
-////            rowNumb++;
-////        }
-//        LAST_EMP_ROW = BEGIN_ROW_CREATED_SHEET;
-//        baseExcel.saveChangesToFile();
-//    }
+        LAST_EMP_ROW = BEGIN_ROW_CREATED_SHEET;
+        baseExcel.saveChangesToFile();
+    }
 
     public void writeSheetEmp(List<Customers> customers) {
 
@@ -484,9 +486,8 @@ public class RevenueSheetWriter {
 //                }
             }
         }
-//        writeBenchList(BEGIN_ROW_CREATED_SHEET);
+        writeBenchList(BEGIN_ROW_CREATED_SHEET, customers);
         writeTotal();
-
 //        CellRangeAddress cellMerge = new CellRangeAddress(1,4,1,1);
 //        sheet.addMergedRegion(cellMerge);
 //        setBordersToMergedCells(sheet, cellMerge);
