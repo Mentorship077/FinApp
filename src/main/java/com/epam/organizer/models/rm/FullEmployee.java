@@ -3,9 +3,18 @@ package com.epam.organizer.models.rm;
 public class FullEmployee {
 
     private String name;
-    private String rm;
     private String title;
+    private Integer employeeSeniority;
     private String primarySkill;
+    private String rm;
+
+    public Integer getEmployeeSeniority() {
+        return employeeSeniority;
+    }
+
+    public void setEmployeeSeniority(Integer employeeSeniority) {
+        this.employeeSeniority = employeeSeniority;
+    }
 
     public FullEmployee() {
     }

@@ -1,8 +1,7 @@
 package com.epam.organizer.core.rmSheet;
 
 import com.epam.organizer.core.base.BaseExcel;
-import com.epam.organizer.models.customer.Customers;
-import com.epam.organizer.models.customer.Employee;
+import com.epam.organizer.models.rm.FullEmployee;
 import com.epam.organizer.models.rm.RMPersonList;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -15,6 +14,7 @@ import static com.epam.organizer.commons.CommonConst.*;
 import static java.util.stream.Collectors.toList;
 
 public class RMSheet {
+    private int senNumber;
     int rowEmpCount;
     private BaseExcel baseExcel = new BaseExcel(REVENUE_PATH).openFile();
     private Sheet sheet = baseExcel.createSheet(RM_SHEETS);
@@ -22,45 +22,65 @@ public class RMSheet {
     private double TOTAL_EMP_COUNT;
     private double TOTAL_SENIORITY;
 
-    private static List<String> getDistinctRM(List<Customers> customers) {
+    public int getSeniority(String value) {
+        String normValue;
+        if (value.equals("Junior Software Test Automation Engineer")) {
+            normValue = JUNIOR;
+            senNumber = 1;
+        } else if (value.equals("Software Test Automation Engineer")) {
+            normValue = INTERMEDIATE;
+            senNumber = 2;
+        } else if (value.equals("Senior Software Test Automation Engineer") || value.equals("Senior Software Testing Engineer")) {
+            normValue = SENIOR;
+            senNumber = 3;
+        } else if (value.equals("Lead Software Test Automation Engineer") || value.equals("Software Engineering Team Leader")) {
+            normValue = LEAD;
+            senNumber = 4;
+        } else if (value.equals("Software Engineering Manager")) {
+            normValue = ABOVE_LEAD;
+            senNumber = 5;
+        } else {
+            senNumber = 0;
+            normValue = "doesn't found employee";
+        }
+        return senNumber;
+    }
+
+    public int findPersonSeniority(String name, List<FullEmployee> empList) {
+        for (FullEmployee fullEmployee : empList) {
+            if (name.equals(fullEmployee.getName())) {
+                return getSeniority(fullEmployee.getTitle());
+            }
+        }
+        return 0;
+    }
+
+    private static List<String> getDistinctRM(List<FullEmployee> employees) {
         List<String> allRMs = new ArrayList<>();
-        customers.forEach(customer -> customer.getStreamsList()
-                .forEach(stream -> stream.getEmployeesList()
-                        .forEach(employee ->
-                                allRMs.add(employee.getRm()))));
+        employees
+                .forEach(employee ->
+                        allRMs.add(employee.getRm()));
 
         return allRMs.stream().distinct().collect(toList());
     }
 
-    public static void main(String[] args) {
-        RMSheet rmSheet = new RMSheet();
-//        rmSheet.writeSheetRMs();
-
-
-    }
-
-    private static List<Employee> getAllEmpForRM(List<Employee> employees, String id) {
+    private static List<FullEmployee> getAllEmpForRM(List<FullEmployee> employees, String id) {
         return employees
                 .stream()
                 .filter(x -> x.getRm().equalsIgnoreCase(id))
                 .collect(toList());
     }
 
-    public List<RMPersonList> processAllEmployees(List<Customers> customers) {
-        List<String> rms = getDistinctRM(customers);
+    public List<RMPersonList> processAllEmployees(List<FullEmployee> employeeList) {
+        List<String> rms = getDistinctRM(employeeList);
         List<RMPersonList> rmsEmpList = new ArrayList<>();
 
+        employeeList.forEach(emp -> {
+            emp.setEmployeeSeniority(findPersonSeniority(emp.getTitle(),employeeList));
+        });
         rms.forEach(rm -> {
-            List<Employee> empList = new ArrayList<>();
-            customers.forEach(customer -> customer.getStreamsList()
-                    .forEach(stream -> {
-
-                        List<Employee> list = getAllEmpForRM(stream.getEmployeesList(), rm);
-                        empList.addAll(list);
-                    }));
-
-
-            RMPersonList model = new RMPersonList(rm, empList);
+            List<FullEmployee> list = getAllEmpForRM(employeeList, rm);
+            RMPersonList model = new RMPersonList(rm, list);
             rmsEmpList.add(model);
         });
         return rmsEmpList;
@@ -85,36 +105,36 @@ public class RMSheet {
             int empSenCountPerRM = 0;
 
             rowCount++;
-            for (int j = 0; j < rmPersonLists.get(i).getEmployees().size(); j++) {
+            for (int j = 0; j < rmPersonLists.get(i).getFullEmployees().size(); j++) {
                 Row row1 = createCustomRow();
 
 //              RM
                 Cell cell1 = row1.createCell(0);
-                cell1.setCellValue(rmPersonLists.get(i).getEmployees().get(j).getRm());
+                cell1.setCellValue(rmPersonLists.get(i).getFullEmployees().get(j).getRm());
                 cell1.setCellStyle(getProjectCellStyle());
 
 //              TA Name
                 Cell cell2 = row1.createCell(1);
-                cell2.setCellValue(rmPersonLists.get(i).getEmployees().get(j).getName());
+                cell2.setCellValue(rmPersonLists.get(i).getFullEmployees().get(j).getName());
                 cell2.setCellStyle(getStandardCellStyle());
 
 //              Sen Count
                 Cell cell3 = row1.createCell(2);
-                cell3.setCellValue(rmPersonLists.get(i).getEmployees().get(j).getEmployeeSeniority());
+                cell3.setCellValue(rmPersonLists.get(i).getFullEmployees().get(j).getEmployeeSeniority());
                 cell3.setCellStyle(getStandardCellStyle());
 
-                empSenCountPerRM = empSenCountPerRM + rmPersonLists.get(i).getEmployees().get(j).getEmployeeSeniority();
+                empSenCountPerRM = empSenCountPerRM + rmPersonLists.get(i).getFullEmployees().get(j).getEmployeeSeniority();
             }
 
 
 //            Employee count
-            Integer EMP_COUNT = rmPersonLists.get(i).getEmployees().size();
+            Integer EMP_COUNT = rmPersonLists.get(i).getFullEmployees().size();
 
 //                Seniority per rm
             double average = (double) empSenCountPerRM / EMP_COUNT;
 
 //                Second loop for setting total Emp count and Sen per project for merging cells
-            for (int k = 0; k < rmPersonLists.get(i).getEmployees().size(); k++) {
+            for (int k = 0; k < rmPersonLists.get(i).getFullEmployees().size(); k++) {
                 Row row1 = getRow();
 
 //                Emp Count
@@ -132,7 +152,7 @@ public class RMSheet {
             }
 
             // Cell merging
-            int size = rowCount + (rmPersonLists.get(i).getEmployees().size() - 1);
+            int size = rowCount + (rmPersonLists.get(i).getFullEmployees().size() - 1);
             if (rowCount != size) {
                 sheet.addMergedRegion(CellRangeAddress.valueOf("A" + rowCount + ":A" + size));
                 sheet.addMergedRegion(CellRangeAddress.valueOf("D" + rowCount + ":D" + size));

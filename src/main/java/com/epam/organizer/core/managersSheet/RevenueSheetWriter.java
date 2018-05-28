@@ -3,7 +3,7 @@ package com.epam.organizer.core.managersSheet;
 import com.epam.organizer.core.base.BaseExcel;
 import com.epam.organizer.core.emp.StatusEmp;
 import com.epam.organizer.models.customer.Customers;
-import com.epam.organizer.models.rm.FullEmployee;
+import com.epam.organizer.models.customer.Employee;
 import com.epam.organizer.models.salaryTable.Position;
 import org.apache.poi.ss.usermodel.*;
 
@@ -124,8 +124,9 @@ public class RevenueSheetWriter {
 
 
         BEGIN_ROW_CREATED_SHEET++;
-        writeConclusionTotal();
         baseExcel.saveChangesToFile();
+//        writeConclusionTotal();
+//        baseExcel.saveChangesToFile();
     }
 
     public void writeConclusionTotal() {
@@ -236,32 +237,10 @@ public class RevenueSheetWriter {
 
     }
 
-    public void writeBenchList(int rowNumb) {
-        List<FullEmployee> list = statusEmp.getBenchList();
-
-        for (FullEmployee fullEmployee : list) {
-            BEGIN_ROW_CREATED_SHEET++;
-            Row row = sheet.createRow(rowNumb);
-
-            Cell benchHeader = row.createCell(0);
-            benchHeader.setCellValue("Bench");
-            benchHeader.setCellStyle(getCellSHeaderStyle());
-
-            row.createCell(1).setCellValue(fullEmployee.getName());
-
-//            Seniority Level
-            Cell cell12 = row.createCell(10);
-            String filter = statusEmp.findPersonTitle(fullEmployee.getTitle(), fullEmployee);
-            cell12.setCellValue(filter);
-            cell12.setCellStyle(getStandardCellStyle());
-
-//                   Cost
-            String cellNumb = "K" + BEGIN_ROW_CREATED_SHEET;
-            row.createCell(11).setCellFormula("IF(+" + cellNumb + "=T3,W3,IF(" + cellNumb + "=T4,W4,if(" + cellNumb + "=T5,W5,if(" + cellNumb + "=T6,W6,if(" + cellNumb + "=T7,W7)))))");
-
-            rowNumb++;
-        }
-//        for (Map.Entry<EmpTitle, String> entry : benchList.entrySet()) {
+//    public void writeBenchList(int rowNumb) {
+//        List<Employee> list = statusEmp.getBenchList();
+//
+//        for (Employee fullEmployee : list) {
 //            BEGIN_ROW_CREATED_SHEET++;
 //            Row row = sheet.createRow(rowNumb);
 //
@@ -269,11 +248,11 @@ public class RevenueSheetWriter {
 //            benchHeader.setCellValue("Bench");
 //            benchHeader.setCellStyle(getCellSHeaderStyle());
 //
-//            row.createCell(1).setCellValue(entry.getKey().getName());
+//            row.createCell(1).setCellValue(fullEmployee.getName());
 //
 ////            Seniority Level
 //            Cell cell12 = row.createCell(10);
-//            String filter = statusEmp.findPersonTitle(entry.getKey().getStatus());
+//            String filter = statusEmp.findPersonTitle(fullEmployee.getTitle(), fullEmployee);
 //            cell12.setCellValue(filter);
 //            cell12.setCellStyle(getStandardCellStyle());
 //
@@ -283,9 +262,31 @@ public class RevenueSheetWriter {
 //
 //            rowNumb++;
 //        }
-        LAST_EMP_ROW = BEGIN_ROW_CREATED_SHEET;
-        baseExcel.saveChangesToFile();
-    }
+////        for (Map.Entry<EmpTitle, String> entry : benchList.entrySet()) {
+////            BEGIN_ROW_CREATED_SHEET++;
+////            Row row = sheet.createRow(rowNumb);
+////
+////            Cell benchHeader = row.createCell(0);
+////            benchHeader.setCellValue("Bench");
+////            benchHeader.setCellStyle(getCellSHeaderStyle());
+////
+////            row.createCell(1).setCellValue(entry.getKey().getName());
+////
+//////            Seniority Level
+////            Cell cell12 = row.createCell(10);
+////            String filter = statusEmp.findPersonSeniority(entry.getKey().getStatus());
+////            cell12.setCellValue(filter);
+////            cell12.setCellStyle(getStandardCellStyle());
+////
+//////                   Cost
+////            String cellNumb = "K" + BEGIN_ROW_CREATED_SHEET;
+////            row.createCell(11).setCellFormula("IF(+" + cellNumb + "=T3,W3,IF(" + cellNumb + "=T4,W4,if(" + cellNumb + "=T5,W5,if(" + cellNumb + "=T6,W6,if(" + cellNumb + "=T7,W7)))))");
+////
+////            rowNumb++;
+////        }
+//        LAST_EMP_ROW = BEGIN_ROW_CREATED_SHEET;
+//        baseExcel.saveChangesToFile();
+//    }
 
     public void writeSheetEmp(List<Customers> customers) {
 
@@ -483,7 +484,7 @@ public class RevenueSheetWriter {
 //                }
             }
         }
-        writeBenchList(BEGIN_ROW_CREATED_SHEET);
+//        writeBenchList(BEGIN_ROW_CREATED_SHEET);
         writeTotal();
 
 //        CellRangeAddress cellMerge = new CellRangeAddress(1,4,1,1);

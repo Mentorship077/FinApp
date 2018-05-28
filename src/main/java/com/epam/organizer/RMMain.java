@@ -1,9 +1,11 @@
 package com.epam.organizer;
 
+import com.epam.organizer.core.emp.EmployeeBhv;
 import com.epam.organizer.core.emp.StatusEmp;
 import com.epam.organizer.core.rev.RevenueParser;
 import com.epam.organizer.core.rmSheet.RMSheet;
 import com.epam.organizer.models.customer.Customers;
+import com.epam.organizer.models.rm.FullEmployee;
 import com.epam.organizer.models.rm.RMPersonList;
 
 import java.util.List;
@@ -17,16 +19,10 @@ public class RMMain {
     public static void main(String[] args) {
         REVENUE_PATH = OUTPUT_DIRECTORY + "\\" + getExcelPath();
 
-        RevenueParser parser = new RevenueParser();
-        StatusEmp statusEmp = new StatusEmp();
         RMSheet rmSheet = new RMSheet();
+        List<FullEmployee> empList = new EmployeeBhv().getEmployeeList();
 
-        List<Customers> customers = parser.getCustomerModel();
-
-        statusEmp.assignTitleToEmployeeAndFixedRev(customers);
-        statusEmp.setFixedRev(customers);
-
-        List<RMPersonList> list = rmSheet.processAllEmployees(customers);
+        List<RMPersonList> list = rmSheet.processAllEmployees(empList);
         rmSheet.writeSheetRMs(list);
     }
 }

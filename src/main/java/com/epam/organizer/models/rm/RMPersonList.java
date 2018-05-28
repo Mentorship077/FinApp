@@ -1,17 +1,18 @@
 package com.epam.organizer.models.rm;
 
-import com.epam.organizer.models.customer.Employee;
-
 import java.util.List;
 
 public class RMPersonList {
     private String rm;
-    private List<Employee> employees;
+    private List<FullEmployee> fullEmployees;
 
 
-    public RMPersonList(String rm, List<Employee> employees) {
+    public RMPersonList() {
+    }
+
+    public RMPersonList(String rm, List<FullEmployee> fullEmployees) {
         this.rm = rm;
-        this.employees = employees;
+        this.fullEmployees = fullEmployees;
     }
 
     public String getRm() {
@@ -22,11 +23,11 @@ public class RMPersonList {
         this.rm = rm;
     }
 
-    public List<Employee> getEmployees() {
-        return employees;
+    public List<FullEmployee> getFullEmployees() {
+        return fullEmployees;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
+    public void setFullEmployees(List<FullEmployee> fullEmployees) {
+        this.fullEmployees = fullEmployees;
     }
 }
