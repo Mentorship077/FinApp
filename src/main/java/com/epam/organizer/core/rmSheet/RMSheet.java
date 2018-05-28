@@ -46,9 +46,9 @@ public class RMSheet {
         return senNumber;
     }
 
-    public int findPersonSeniority(String name, List<FullEmployee> empList) {
+    public int findPersonSeniority(String title, List<FullEmployee> empList) {
         for (FullEmployee fullEmployee : empList) {
-            if (name.equals(fullEmployee.getName())) {
+            if (title.equals(fullEmployee.getTitle())) {
                 return getSeniority(fullEmployee.getTitle());
             }
         }
@@ -73,17 +73,18 @@ public class RMSheet {
 
     public List<RMPersonList> processAllEmployees(List<FullEmployee> employeeList) {
         List<String> rms = getDistinctRM(employeeList);
-        List<RMPersonList> rmsEmpList = new ArrayList<>();
+        List<RMPersonList> fullRMsModel = new ArrayList<>();
 
         employeeList.forEach(emp -> {
-            emp.setEmployeeSeniority(findPersonSeniority(emp.getTitle(),employeeList));
+            Integer seniority = findPersonSeniority(emp.getTitle(),employeeList);
+            emp.setEmployeeSeniority(seniority);
         });
         rms.forEach(rm -> {
             List<FullEmployee> list = getAllEmpForRM(employeeList, rm);
             RMPersonList model = new RMPersonList(rm, list);
-            rmsEmpList.add(model);
+            fullRMsModel.add(model);
         });
-        return rmsEmpList;
+        return fullRMsModel;
     }
 
     public void writeSheetRMs(List<RMPersonList> rmPersonLists) {
